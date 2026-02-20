@@ -19,10 +19,16 @@ export default function AboutPage() {
           </p>
     
 
-          <h2 className="text-lg font-semibold text-teal-800 mt-6">Current status</h2>
-          <p>
-            Everything is anon for now as databases take a lot of work to setup. 
-          </p>
+          <h2 className="text-lg font-semibold text-teal-800 mt-6">My principles</h2>
+         <ul>
+              <li>No NSFW content of minors</li>
+  <li>Free to use</li>
+  <li>No ads</li>
+   <li>No trackers</li>
+    <li>Strong protection against bot spam</li>
+    <li>Writers own their content</li>
+  
+</ul>
 
           <h2 className="text-lg font-semibold text-teal-800 mt-6">Contact</h2>
           <p>
