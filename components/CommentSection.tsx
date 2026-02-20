@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useSession } from "next-auth/react";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 
 interface Comment {
   id: string;
@@ -14,11 +16,16 @@ interface CommentSectionProps {
 }
 
 export default function CommentSection({ workId }: CommentSectionProps) {
+  const { data: session } = useSession();
   const [comments, setComments] = useState<Comment[]>([]);
   const [name, setName] = useState("");
   const [body, setBody] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const turnstileRef = useRef<TurnstileInstance>(null);
+
+  const isSignedIn = !!session?.user;
 
   useEffect(() => {
     fetch(`/api/works/${workId}/comments`)
@@ -31,14 +38,28 @@ export default function CommentSection({ workId }: CommentSectionProps) {
     e.preventDefault();
     if (!body.trim()) return;
 
+    if (!isSignedIn && !turnstileToken) {
+      setError("Please complete the captcha");
+      return;
+    }
+
     setSubmitting(true);
     setError("");
 
     try {
+      const payload: Record<string, string> = { body };
+
+      if (isSignedIn) {
+        // Name comes from session on the server
+      } else {
+        payload.name = name;
+        payload.turnstileToken = turnstileToken;
+      }
+
       const res = await fetch(`/api/works/${workId}/comments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, body }),
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
@@ -49,6 +70,8 @@ export default function CommentSection({ workId }: CommentSectionProps) {
       const data = await res.json();
       setComments([...comments, data.comment]);
       setBody("");
+      setTurnstileToken("");
+      turnstileRef.current?.reset();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -100,15 +123,25 @@ export default function CommentSection({ workId }: CommentSectionProps) {
             {error}
           </div>
         )}
-        <div className="mb-3">
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Name (Anonymous)"
-            className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-          />
-        </div>
+
+        {isSignedIn ? (
+          <p className="text-sm text-gray-600 mb-3">
+            Commenting as <span className="font-semibold">{session.user?.name}</span>
+          </p>
+        ) : (
+          <>
+            <div className="mb-3">
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Name (Anonymous)"
+                className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+              />
+            </div>
+          </>
+        )}
+
         <div className="mb-3">
           <textarea
             value={body}
@@ -119,6 +152,19 @@ export default function CommentSection({ workId }: CommentSectionProps) {
             className="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
           />
         </div>
+
+        {!isSignedIn && process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+          <div className="mb-3">
+            <Turnstile
+              ref={turnstileRef}
+              siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+              onSuccess={setTurnstileToken}
+              onError={() => setTurnstileToken("")}
+              onExpire={() => setTurnstileToken("")}
+            />
+          </div>
+        )}
+
         <button
           type="submit"
           disabled={submitting}

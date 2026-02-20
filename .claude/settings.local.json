@@ -6,7 +6,9 @@
       "Bash(npm install:*)",
       "Bash(lsof:*)",
       "Bash(xargs kill:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)"
     ]
   }
 }
