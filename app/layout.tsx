@@ -37,6 +37,9 @@ export default function RootLayout({
                 <Link href="/about" className="hover:text-teal-200">
                   About
                 </Link>
+                <Link href="/devlog" className="hover:text-teal-200">
+                  Devlog
+                </Link>
                 <Link
                   href="/works/new"
                   className="px-3 py-1.5 bg-white text-teal-900 rounded font-semibold hover:bg-teal-100"
