@@ -221,21 +221,21 @@ export default function WorkForm({ mode, editToken, initialData }: WorkFormProps
         type="fandoms"
         value={fandoms}
         onChange={setFandoms}
-        placeholder="e.g. Harry Potter"
+        placeholder="e.g. Original Work"
       />
       <TagInput
         label="Relationships"
         type="relationships"
         value={relationships}
         onChange={setRelationships}
-        placeholder="e.g. Draco Malfoy/Harry Potter"
+        placeholder="e.g. Daien Zheng | Dayan Uzun/Ludi Sand"
       />
       <TagInput
         label="Characters"
         type="characters"
         value={characters}
         onChange={setCharacters}
-        placeholder="e.g. Harry Potter"
+        placeholder="e.g. Daien Zheng | Dayan Uzun"
       />
       <TagInput
         label="Additional Tags"
