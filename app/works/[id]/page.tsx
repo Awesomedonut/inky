@@ -3,6 +3,8 @@ import Link from "next/link";
 import { getWork, getChaptersForWork } from "@/lib/store";
 import ChapterNav from "@/components/ChapterNav";
 import CommentSection from "@/components/CommentSection";
+import KudosButton from "@/components/KudosButton";
+import HitTracker from "@/components/HitTracker";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +30,7 @@ export default async function WorkPage({
 
   return (
     <div className="max-w-4xl mx-auto">
+      <HitTracker workId={id} />
       {/* Work header */}
       <div className="bg-white border border-gray-300 rounded p-6 mb-6">
         <h1 className="text-2xl font-bold text-teal-900 mb-1">{work.title}</h1>
@@ -92,6 +95,8 @@ export default async function WorkPage({
         <div className="text-xs text-gray-500 flex gap-3">
           <span>Words: {work.wordCount.toLocaleString()}</span>
           <span>Chapters: {work.chapterCount}</span>
+          <span>Hits: {(work.hitCount || 0).toLocaleString()}</span>
+          <span>Kudos: {(work.kudosCount || 0).toLocaleString()}</span>
           <span>Published: {new Date(work.createdAt).toLocaleDateString()}</span>
           {work.updatedAt !== work.createdAt && (
             <span>
@@ -102,6 +107,7 @@ export default async function WorkPage({
 
         {/* Actions */}
         <div className="flex gap-2 mt-4 pt-3 border-t border-gray-200">
+          <KudosButton workId={id} initialCount={work.kudosCount || 0} />
           <Link
             href={`/works/${id}/edit`}
             className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200"

@@ -12,6 +12,8 @@ interface WorkCardProps {
   summary: string;
   wordCount: number;
   chapterCount: number;
+  kudosCount?: number;
+  hitCount?: number;
   createdAt: string;
 }
 
@@ -35,6 +37,8 @@ export default function WorkCard({
   summary,
   wordCount,
   chapterCount,
+  kudosCount,
+  hitCount,
   createdAt,
 }: WorkCardProps) {
   return (
@@ -107,6 +111,8 @@ export default function WorkCard({
         <div className="text-xs text-gray-500 flex gap-3">
           <span>Words: {wordCount.toLocaleString()}</span>
           <span>Chapters: {chapterCount}</span>
+          <span>Hits: {(hitCount || 0).toLocaleString()}</span>
+          <span>Kudos: {(kudosCount || 0).toLocaleString()}</span>
           <span>{new Date(createdAt).toLocaleDateString()}</span>
         </div>
       </div>

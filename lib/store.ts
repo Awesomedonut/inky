@@ -53,7 +53,7 @@ export async function getWork(id: string): Promise<Work | undefined> {
 }
 
 export async function createWork(
-  data: Omit<Work, "id" | "editToken" | "wordCount" | "chapterCount" | "createdAt" | "updatedAt">,
+  data: Omit<Work, "id" | "editToken" | "wordCount" | "chapterCount" | "kudosCount" | "hitCount" | "createdAt" | "updatedAt">,
   chapterBody: string,
   chapterTitle?: string
 ): Promise<{ work: Work; chapter: Chapter; rawToken: string }> {
@@ -67,6 +67,8 @@ export async function createWork(
     editToken: hashToken(rawToken),
     wordCount: countWords(chapterBody),
     chapterCount: 1,
+    kudosCount: 0,
+    hitCount: 0,
     createdAt: now,
     updatedAt: now,
   };
@@ -124,6 +126,24 @@ export async function recalcWorkStats(workId: string): Promise<void> {
   const chapters = await getChaptersForWork(workId);
   const wordCount = chapters.reduce((sum, ch) => sum + countWords(ch.body), 0);
   await updateWork(workId, { wordCount, chapterCount: chapters.length });
+}
+
+export async function incrementKudos(workId: string): Promise<number | undefined> {
+  const works = await getWorks();
+  const idx = works.findIndex((w) => w.id === workId);
+  if (idx === -1) return undefined;
+  works[idx].kudosCount = (works[idx].kudosCount || 0) + 1;
+  await writeJSON("works.json", works);
+  return works[idx].kudosCount;
+}
+
+export async function incrementHits(workId: string): Promise<number | undefined> {
+  const works = await getWorks();
+  const idx = works.findIndex((w) => w.id === workId);
+  if (idx === -1) return undefined;
+  works[idx].hitCount = (works[idx].hitCount || 0) + 1;
+  await writeJSON("works.json", works);
+  return works[idx].hitCount;
 }
 
 // --- Chapters ---

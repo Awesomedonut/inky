@@ -11,6 +11,8 @@ export interface Work {
   editToken: string; // stored as SHA-256 hash
   wordCount: number;
   chapterCount: number;
+  kudosCount: number;
+  hitCount: number;
   createdAt: string;
   updatedAt: string;
 }

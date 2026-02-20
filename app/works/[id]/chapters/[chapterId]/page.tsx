@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getWork, getChapter, getChaptersForWork } from "@/lib/store";
 import ChapterNav from "@/components/ChapterNav";
 import CommentSection from "@/components/CommentSection";
+import HitTracker from "@/components/HitTracker";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -22,6 +23,7 @@ export default async function ChapterPage({
 
   return (
     <div className="max-w-4xl mx-auto">
+      <HitTracker workId={id} />
       {/* Work title breadcrumb */}
       <div className="mb-4">
         <Link href={`/works/${id}`} className="text-teal-700 hover:underline text-sm">
