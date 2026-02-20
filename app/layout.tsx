@@ -9,8 +9,8 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Inky - A Fanfiction Archive",
-  description: "Post, read, and share fanfiction",
+  title: "Inky: A Writing Archive",
+  description: "Post, read, and share writing",
 };
 
 export default function RootLayout({
@@ -47,7 +47,7 @@ export default function RootLayout({
         {/* Footer */}
         <footer className="border-t border-gray-200 mt-12">
           <div className="max-w-6xl mx-auto px-4 py-4 text-center text-xs text-gray-500">
-            Inky &mdash; A fanfiction archive proof of concept
+            Inky: A writing archive proof of concept/prototype
           </div>
         </footer>
       </body>

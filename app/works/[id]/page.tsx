@@ -99,6 +99,22 @@ export default async function WorkPage({
             </span>
           )}
         </div>
+
+        {/* Actions */}
+        <div className="flex gap-2 mt-4 pt-3 border-t border-gray-200">
+          <Link
+            href={`/works/${id}/edit`}
+            className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200"
+          >
+            Edit Work
+          </Link>
+          <Link
+            href={`/works/${id}/chapters/new`}
+            className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200"
+          >
+            Add Chapter
+          </Link>
+        </div>
       </div>
 
       {/* Chapter index (if multi-chapter) */}

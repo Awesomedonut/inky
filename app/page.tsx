@@ -17,7 +17,7 @@ export default async function HomePage() {
           Welcome to Inky
         </h1>
         <p className="text-gray-600 mb-4">
-          A fanfiction archive where anyone can share their stories.
+          A writing archive
         </p>
         <div className="flex justify-center gap-3">
           <Link
