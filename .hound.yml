@@ -1,9 +1,0 @@
-# Available linter versions:
-# http://help.houndci.com/en/articles/2461415-supported-linters
-
-jshint:
-  config_file: .jshintrc
-  ignore_file: .jshintignore
-
-rubocop:
-  enabled: false
