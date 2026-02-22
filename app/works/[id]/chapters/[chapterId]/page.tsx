@@ -3,6 +3,7 @@ import { getWork, getChapter, getChaptersForWork } from "@/lib/store";
 import ChapterNav from "@/components/ChapterNav";
 import CommentSection from "@/components/CommentSection";
 import HitTracker from "@/components/HitTracker";
+import FormattedText from "@/components/FormattedText";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -49,7 +50,7 @@ export default async function ChapterPage({
           {chapter.title || `Chapter ${chapter.position}`}
         </h2>
         <div className="prose max-w-none whitespace-pre-wrap text-gray-800 leading-relaxed">
-          {chapter.body}
+          <FormattedText text={chapter.body} />
         </div>
       </div>
 

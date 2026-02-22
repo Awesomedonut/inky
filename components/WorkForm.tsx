@@ -276,6 +276,9 @@ export default function WorkForm({ mode, editToken, initialData }: WorkFormProps
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500 font-mono"
               placeholder="Write your story here..."
             />
+            <p className="text-xs text-gray-500 mt-1">
+              Use <code className="bg-gray-100 px-1 rounded">*text*</code> for <em>italics</em>
+            </p>
           </div>
         </>
       )}

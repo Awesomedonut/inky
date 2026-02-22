@@ -114,6 +114,9 @@ function NewChapterInner() {
             className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500 font-mono"
             placeholder="Write your chapter here..."
           />
+          <p className="text-xs text-gray-500 mt-1">
+            Use <code className="bg-gray-100 px-1 rounded">*text*</code> for <em>italics</em>
+          </p>
         </div>
 
         <div className="flex gap-3">

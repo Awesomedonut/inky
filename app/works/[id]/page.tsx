@@ -5,6 +5,7 @@ import ChapterNav from "@/components/ChapterNav";
 import CommentSection from "@/components/CommentSection";
 import KudosButton from "@/components/KudosButton";
 import HitTracker from "@/components/HitTracker";
+import FormattedText from "@/components/FormattedText";
 
 export const dynamic = "force-dynamic";
 
@@ -162,7 +163,7 @@ export default async function WorkPage({
             </h2>
           )}
           <div className="prose max-w-none whitespace-pre-wrap text-gray-800 leading-relaxed">
-            {firstChapter.body}
+            <FormattedText text={firstChapter.body} />
           </div>
         </div>
       )}
