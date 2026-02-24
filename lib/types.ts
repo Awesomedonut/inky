@@ -22,6 +22,7 @@ export interface Chapter {
   workId: string;
   title: string;
   body: string;
+  format: "rich_text" | "html";
   position: number;
   createdAt: string;
 }

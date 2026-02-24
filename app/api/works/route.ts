@@ -58,7 +58,19 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const body = await request.json();
 
-  const { title, author, summary, rating, fandoms, relationships, characters, freeforms, chapterBody, chapterTitle } = body;
+  const {
+    title,
+    author,
+    summary,
+    rating,
+    fandoms,
+    relationships,
+    characters,
+    freeforms,
+    chapterBody,
+    chapterTitle,
+    chapterFormat,
+  } = body;
 
   if (!title?.trim()) {
     return NextResponse.json({ error: "Title is required" }, { status: 400 });
@@ -68,6 +80,9 @@ export async function POST(request: NextRequest) {
   }
   if (rating && !RATINGS.includes(rating)) {
     return NextResponse.json({ error: "Invalid rating" }, { status: 400 });
+  }
+  if (chapterFormat && chapterFormat !== "rich_text" && chapterFormat !== "html") {
+    return NextResponse.json({ error: "Invalid chapter format" }, { status: 400 });
   }
 
   const { work, chapter, rawToken } = await createWork(
@@ -82,7 +97,8 @@ export async function POST(request: NextRequest) {
       freeforms: freeforms || [],
     },
     chapterBody,
-    chapterTitle
+    chapterTitle,
+    chapterFormat || "rich_text"
   );
 
   // Return the work without the hashed token, but with the raw token

@@ -163,7 +163,10 @@ export default async function WorkPage({
             </h2>
           )}
           <div className="prose max-w-none whitespace-pre-wrap text-gray-800 leading-relaxed">
-            <FormattedText text={firstChapter.body} />
+            <FormattedText
+              text={firstChapter.body}
+              format={firstChapter.format || "rich_text"}
+            />
           </div>
         </div>
       )}

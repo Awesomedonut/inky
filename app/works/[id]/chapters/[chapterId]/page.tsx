@@ -50,7 +50,10 @@ export default async function ChapterPage({
           {chapter.title || `Chapter ${chapter.position}`}
         </h2>
         <div className="prose max-w-none whitespace-pre-wrap text-gray-800 leading-relaxed">
-          <FormattedText text={chapter.body} />
+          <FormattedText
+            text={chapter.body}
+            format={chapter.format || "rich_text"}
+          />
         </div>
       </div>
 

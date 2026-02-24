@@ -55,7 +55,8 @@ export async function getWork(id: string): Promise<Work | undefined> {
 export async function createWork(
   data: Omit<Work, "id" | "editToken" | "wordCount" | "chapterCount" | "kudosCount" | "hitCount" | "createdAt" | "updatedAt">,
   chapterBody: string,
-  chapterTitle?: string
+  chapterTitle?: string,
+  chapterFormat: "rich_text" | "html" = "rich_text"
 ): Promise<{ work: Work; chapter: Chapter; rawToken: string }> {
   const works = await getWorks();
   const rawToken = crypto.randomUUID();
@@ -76,7 +77,7 @@ export async function createWork(
   works.push(work);
   await writeJSON("works.json", works);
 
-  const chapter = await createChapter(work.id, chapterBody, chapterTitle);
+  const chapter = await createChapter(work.id, chapterBody, chapterTitle, chapterFormat);
 
   return { work, chapter, rawToken };
 }
@@ -149,7 +150,11 @@ export async function incrementHits(workId: string): Promise<number | undefined>
 // --- Chapters ---
 
 export async function getChapters(): Promise<Chapter[]> {
-  return readJSON<Chapter>("chapters.json");
+  const chapters = await readJSON<Chapter>("chapters.json");
+  return chapters.map((chapter) => ({
+    ...chapter,
+    format: chapter.format || "rich_text",
+  }));
 }
 
 export async function getChaptersForWork(workId: string): Promise<Chapter[]> {
@@ -167,7 +172,8 @@ export async function getChapter(id: string): Promise<Chapter | undefined> {
 export async function createChapter(
   workId: string,
   body: string,
-  title?: string
+  title?: string,
+  format: "rich_text" | "html" = "rich_text"
 ): Promise<Chapter> {
   const chapters = await getChapters();
   const workChapters = chapters.filter((c) => c.workId === workId);
@@ -178,6 +184,7 @@ export async function createChapter(
     workId,
     title: title || "",
     body,
+    format,
     position,
     createdAt: new Date().toISOString(),
   };

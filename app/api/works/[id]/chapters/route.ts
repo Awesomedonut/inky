@@ -7,7 +7,7 @@ export async function POST(
 ) {
   const { id } = await params;
   const body = await request.json();
-  const { editToken, title, body: chapterBody } = body;
+  const { editToken, title, body: chapterBody, format } = body;
 
   if (!editToken) {
     return NextResponse.json({ error: "Edit token required" }, { status: 401 });
@@ -28,8 +28,11 @@ export async function POST(
       { status: 400 }
     );
   }
+  if (format && format !== "rich_text" && format !== "html") {
+    return NextResponse.json({ error: "Invalid chapter format" }, { status: 400 });
+  }
 
-  const chapter = await createChapter(id, chapterBody, title);
+  const chapter = await createChapter(id, chapterBody, title, format || "rich_text");
   await recalcWorkStats(id);
 
   return NextResponse.json({ chapter }, { status: 201 });

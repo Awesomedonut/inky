@@ -1,11 +1,22 @@
 import React from "react";
+import { sanitizeHtml } from "@/lib/html";
 
 /**
  * Renders story text with simple formatting support.
  * Supported: *italic text*
  * Preserves whitespace/newlines.
  */
-export default function FormattedText({ text }: { text: string }) {
+export default function FormattedText({
+  text,
+  format = "rich_text",
+}: {
+  text: string;
+  format?: "rich_text" | "html";
+}) {
+  if (format === "html") {
+    return <span dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }} />;
+  }
+
   const parts: React.ReactNode[] = [];
   const regex = /\*([^*]+)\*/g;
   let lastIndex = 0;

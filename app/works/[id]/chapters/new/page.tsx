@@ -13,6 +13,7 @@ function NewChapterInner() {
   const [token, setToken] = useState(tokenFromUrl);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const [format, setFormat] = useState<"rich_text" | "html">("rich_text");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -62,7 +63,7 @@ function NewChapterInner() {
       const res = await fetch(`/api/works/${id}/chapters`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ editToken: token, title, body }),
+        body: JSON.stringify({ editToken: token, title, body, format }),
       });
 
       if (!res.ok) {
@@ -106,16 +107,57 @@ function NewChapterInner() {
           <label className="block text-sm font-semibold text-gray-700 mb-1">
             Content <span className="text-teal-600">*</span>
           </label>
+          <div className="mb-2 inline-flex rounded border border-gray-300 p-1 text-sm">
+            <button
+              type="button"
+              onClick={() => setFormat("rich_text")}
+              className={`rounded px-3 py-1 ${
+                format === "rich_text"
+                  ? "bg-teal-700 text-white"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`}
+            >
+              Rich Text
+            </button>
+            <button
+              type="button"
+              onClick={() => setFormat("html")}
+              className={`rounded px-3 py-1 ${
+                format === "html"
+                  ? "bg-teal-700 text-white"
+                  : "text-gray-700 hover:bg-gray-100"
+              }`}
+            >
+              HTML
+            </button>
+          </div>
           <textarea
             value={body}
             onChange={(e) => setBody(e.target.value)}
             required
             rows={15}
             className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500 font-mono"
-            placeholder="Write your chapter here..."
+            placeholder={
+              format === "html"
+                ? "Write your chapter using HTML tags..."
+                : "Write your chapter here..."
+            }
           />
           <p className="text-xs text-gray-500 mt-1">
-            Use <code className="bg-gray-100 px-1 rounded">*text*</code> for <em>italics</em>
+            {format === "html" ? (
+              <>
+                HTML mode supports safe tags like{" "}
+                <code className="bg-gray-100 px-1 rounded">
+                  p, em, strong, a, ul, li, h1-h6
+                </code>
+                .
+              </>
+            ) : (
+              <>
+                Use <code className="bg-gray-100 px-1 rounded">*text*</code> for{" "}
+                <em>italics</em>.
+              </>
+            )}
           </p>
         </div>
 
