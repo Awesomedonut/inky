@@ -5,19 +5,14 @@ import { useSearchParams, useRouter } from "next/navigation";
 import WorkCard from "@/components/WorkCard";
 import TagFilter from "@/components/TagFilter";
 
-interface WorkData {
-  id: string;
-  title: string;
-  author: string;
-  rating: string;
-  fandoms: string[];
-  relationships: string[];
-  characters: string[];
-  freeforms: string[];
-  summary: string;
-  wordCount: number;
-  chapterCount: number;
-  createdAt: string;
+import { SanitizedWork } from "@/lib/types";
+
+function buildWorksUrl(filters: { tag?: string; q?: string; page?: number }) {
+  const params = new URLSearchParams();
+  if (filters.tag) params.set("tag", filters.tag);
+  if (filters.q) params.set("q", filters.q);
+  if (filters.page) params.set("page", String(filters.page));
+  return `/works?${params.toString()}`;
 }
 
 function BrowseWorksInner() {
@@ -27,18 +22,13 @@ function BrowseWorksInner() {
   const q = searchParams.get("q") || "";
   const page = parseInt(searchParams.get("page") || "1", 10);
 
-  const [works, setWorks] = useState<WorkData[]>([]);
+  const [works, setWorks] = useState<SanitizedWork[]>([]);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState(q);
 
   useEffect(() => {
-    const params = new URLSearchParams();
-    if (tag) params.set("tag", tag);
-    if (q) params.set("q", q);
-    params.set("page", String(page));
-
-    fetch(`/api/works?${params.toString()}`)
+    fetch(`/api/works?${new URLSearchParams({ ...(tag && { tag }), ...(q && { q }), page: String(page) }).toString()}`)
       .then((res) => res.json())
       .then((data) => {
         setWorks(data.works || []);
@@ -50,10 +40,7 @@ function BrowseWorksInner() {
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
-    const params = new URLSearchParams();
-    if (search.trim()) params.set("q", search.trim());
-    if (tag) params.set("tag", tag);
-    router.push(`/works?${params.toString()}`);
+    router.push(buildWorksUrl({ tag, q: search.trim() }));
   }
 
   return (
@@ -102,7 +89,7 @@ function BrowseWorksInner() {
         ) : (
           <>
             {works.map((work) => (
-              <WorkCard key={work.id} {...work} />
+              <WorkCard key={work.id} work={work} />
             ))}
 
             {/* Pagination */}
@@ -110,13 +97,7 @@ function BrowseWorksInner() {
               <div className="flex justify-center gap-2 mt-6">
                 {page > 1 && (
                   <button
-                    onClick={() => {
-                      const params = new URLSearchParams();
-                      if (tag) params.set("tag", tag);
-                      if (q) params.set("q", q);
-                      params.set("page", String(page - 1));
-                      router.push(`/works?${params.toString()}`);
-                    }}
+                    onClick={() => router.push(buildWorksUrl({ tag, q, page: page - 1 }))}
                     className="px-3 py-1 bg-gray-200 rounded text-sm hover:bg-gray-300"
                   >
                     Previous
@@ -127,13 +108,7 @@ function BrowseWorksInner() {
                 </span>
                 {page < totalPages && (
                   <button
-                    onClick={() => {
-                      const params = new URLSearchParams();
-                      if (tag) params.set("tag", tag);
-                      if (q) params.set("q", q);
-                      params.set("page", String(page + 1));
-                      router.push(`/works?${params.toString()}`);
-                    }}
+                    onClick={() => router.push(buildWorksUrl({ tag, q, page: page + 1 }))}
                     className="px-3 py-1 bg-gray-200 rounded text-sm hover:bg-gray-300"
                   >
                     Next

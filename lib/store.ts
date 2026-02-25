@@ -2,9 +2,12 @@ import { readFile, writeFile, rename, mkdir } from "fs/promises";
 import { existsSync } from "fs";
 import path from "path";
 import crypto from "crypto";
-import { Work, Chapter, Comment, TagType } from "./types";
+import { Work, Chapter, Comment, TagType, TAG_TYPES, SanitizedWork } from "./types";
 
 const DATA_DIR = path.join(process.cwd(), "data");
+const WORKS_FILE = "works.json";
+const CHAPTERS_FILE = "chapters.json";
+const COMMENTS_FILE = "comments.json";
 
 async function ensureDataDir() {
   if (!existsSync(DATA_DIR)) {
@@ -35,6 +38,18 @@ export function hashToken(token: string): string {
   return crypto.createHash("sha256").update(token).digest("hex");
 }
 
+export function sanitizeWork(work: Work): SanitizedWork {
+  const { editToken: _, ...sanitized } = work;
+  return sanitized;
+}
+
+export function workMatchesTag(work: Work, tag: string): boolean {
+  const tagLower = tag.toLowerCase();
+  return TAG_TYPES.some((type) =>
+    work[type].some((t) => t.toLowerCase() === tagLower)
+  );
+}
+
 function countWords(text: string): number {
   const stripped = text.replace(/<[^>]*>/g, " ");
   const words = stripped.trim().split(/\s+/).filter(Boolean);
@@ -44,7 +59,7 @@ function countWords(text: string): number {
 // --- Works ---
 
 export async function getWorks(): Promise<Work[]> {
-  return readJSON<Work>("works.json");
+  return readJSON<Work>(WORKS_FILE);
 }
 
 export async function getWork(id: string): Promise<Work | undefined> {
@@ -75,7 +90,7 @@ export async function createWork(
   };
 
   works.push(work);
-  await writeJSON("works.json", works);
+  await writeJSON(WORKS_FILE, works);
 
   const chapter = await createChapter(work.id, chapterBody, chapterTitle, chapterFormat);
 
@@ -95,7 +110,7 @@ export async function updateWork(
     ...data,
     updatedAt: new Date().toISOString(),
   };
-  await writeJSON("works.json", works);
+  await writeJSON(WORKS_FILE, works);
   return works[idx];
 }
 
@@ -105,18 +120,18 @@ export async function deleteWork(id: string): Promise<boolean> {
   if (idx === -1) return false;
 
   works.splice(idx, 1);
-  await writeJSON("works.json", works);
+  await writeJSON(WORKS_FILE, works);
 
   // Delete associated chapters and comments
   const chapters = await getChapters();
   await writeJSON(
-    "chapters.json",
+    CHAPTERS_FILE,
     chapters.filter((c) => c.workId !== id)
   );
 
   const comments = await getComments();
   await writeJSON(
-    "comments.json",
+    COMMENTS_FILE,
     comments.filter((c) => c.workId !== id)
   );
 
@@ -129,28 +144,30 @@ export async function recalcWorkStats(workId: string): Promise<void> {
   await updateWork(workId, { wordCount, chapterCount: chapters.length });
 }
 
-export async function incrementKudos(workId: string): Promise<number | undefined> {
+async function incrementWorkCounter(
+  workId: string,
+  field: "kudosCount" | "hitCount"
+): Promise<number | undefined> {
   const works = await getWorks();
   const idx = works.findIndex((w) => w.id === workId);
   if (idx === -1) return undefined;
-  works[idx].kudosCount = (works[idx].kudosCount || 0) + 1;
-  await writeJSON("works.json", works);
-  return works[idx].kudosCount;
+  works[idx][field] = (works[idx][field] || 0) + 1;
+  await writeJSON(WORKS_FILE, works);
+  return works[idx][field];
+}
+
+export async function incrementKudos(workId: string): Promise<number | undefined> {
+  return incrementWorkCounter(workId, "kudosCount");
 }
 
 export async function incrementHits(workId: string): Promise<number | undefined> {
-  const works = await getWorks();
-  const idx = works.findIndex((w) => w.id === workId);
-  if (idx === -1) return undefined;
-  works[idx].hitCount = (works[idx].hitCount || 0) + 1;
-  await writeJSON("works.json", works);
-  return works[idx].hitCount;
+  return incrementWorkCounter(workId, "hitCount");
 }
 
 // --- Chapters ---
 
 export async function getChapters(): Promise<Chapter[]> {
-  const chapters = await readJSON<Chapter>("chapters.json");
+  const chapters = await readJSON<Chapter>(CHAPTERS_FILE);
   return chapters.map((chapter) => ({
     ...chapter,
     format: chapter.format || "rich_text",
@@ -190,7 +207,7 @@ export async function createChapter(
   };
 
   chapters.push(chapter);
-  await writeJSON("chapters.json", chapters);
+  await writeJSON(CHAPTERS_FILE, chapters);
 
   return chapter;
 }
@@ -198,7 +215,7 @@ export async function createChapter(
 // --- Comments ---
 
 export async function getComments(): Promise<Comment[]> {
-  return readJSON<Comment>("comments.json");
+  return readJSON<Comment>(COMMENTS_FILE);
 }
 
 export async function getCommentsForWork(workId: string): Promise<Comment[]> {
@@ -224,7 +241,7 @@ export async function createComment(
   };
 
   comments.push(comment);
-  await writeJSON("comments.json", comments);
+  await writeJSON(COMMENTS_FILE, comments);
 
   return comment;
 }
@@ -233,24 +250,17 @@ export async function createComment(
 
 export async function getAllTags(): Promise<Record<TagType, string[]>> {
   const works = await getWorks();
-  const tags: Record<TagType, Set<string>> = {
-    fandoms: new Set(),
-    relationships: new Set(),
-    characters: new Set(),
-    freeforms: new Set(),
-  };
+  const tagSets = Object.fromEntries(
+    TAG_TYPES.map((type) => [type, new Set<string>()])
+  ) as Record<TagType, Set<string>>;
 
   for (const work of works) {
-    work.fandoms.forEach((t) => tags.fandoms.add(t));
-    work.relationships.forEach((t) => tags.relationships.add(t));
-    work.characters.forEach((t) => tags.characters.add(t));
-    work.freeforms.forEach((t) => tags.freeforms.add(t));
+    for (const type of TAG_TYPES) {
+      work[type].forEach((t) => tagSets[type].add(t));
+    }
   }
 
-  return {
-    fandoms: [...tags.fandoms].sort(),
-    relationships: [...tags.relationships].sort(),
-    characters: [...tags.characters].sort(),
-    freeforms: [...tags.freeforms].sort(),
-  };
+  return Object.fromEntries(
+    TAG_TYPES.map((type) => [type, [...tagSets[type]].sort()])
+  ) as Record<TagType, string[]>;
 }

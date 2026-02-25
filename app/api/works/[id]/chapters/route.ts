@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getWork, createChapter, recalcWorkStats, hashToken } from "@/lib/store";
+import { createChapter, recalcWorkStats } from "@/lib/store";
+import { verifyEditToken } from "@/lib/auth-helpers";
 
 export async function POST(
   request: NextRequest,
@@ -9,18 +10,8 @@ export async function POST(
   const body = await request.json();
   const { editToken, title, body: chapterBody, format } = body;
 
-  if (!editToken) {
-    return NextResponse.json({ error: "Edit token required" }, { status: 401 });
-  }
-
-  const work = await getWork(id);
-  if (!work) {
-    return NextResponse.json({ error: "Work not found" }, { status: 404 });
-  }
-
-  if (hashToken(editToken) !== work.editToken) {
-    return NextResponse.json({ error: "Invalid edit token" }, { status: 403 });
-  }
+  const result = await verifyEditToken(id, editToken);
+  if (!result.ok) return result.response;
 
   if (!chapterBody?.trim()) {
     return NextResponse.json(

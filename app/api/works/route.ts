@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getWorks, createWork } from "@/lib/store";
+import { getWorks, createWork, sanitizeWork, workMatchesTag } from "@/lib/store";
 import { RATINGS } from "@/lib/types";
 
 const PAGE_SIZE = 20;
@@ -19,14 +19,7 @@ export async function GET(request: NextRequest) {
 
   // Filter by tag
   if (tag) {
-    const tagLower = tag.toLowerCase();
-    works = works.filter(
-      (w) =>
-        w.fandoms.some((t) => t.toLowerCase() === tagLower) ||
-        w.relationships.some((t) => t.toLowerCase() === tagLower) ||
-        w.characters.some((t) => t.toLowerCase() === tagLower) ||
-        w.freeforms.some((t) => t.toLowerCase() === tagLower)
-    );
+    works = works.filter((w) => workMatchesTag(w, tag));
   }
 
   // Search by title/summary
@@ -44,11 +37,8 @@ export async function GET(request: NextRequest) {
   const totalPages = Math.ceil(total / PAGE_SIZE);
   const paginated = works.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
-  // Strip editToken from results
-  const sanitized = paginated.map(({ editToken: _, ...rest }) => rest);
-
   return NextResponse.json({
-    works: sanitized,
+    works: paginated.map(sanitizeWork),
     page,
     totalPages,
     total,
@@ -101,11 +91,8 @@ export async function POST(request: NextRequest) {
     chapterFormat || "rich_text"
   );
 
-  // Return the work without the hashed token, but with the raw token
-  const { editToken: _, ...sanitizedWork } = work;
-
   return NextResponse.json(
-    { work: sanitizedWork, chapter, editToken: rawToken },
+    { work: sanitizeWork(work), chapter, editToken: rawToken },
     { status: 201 }
   );
 }

@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getWork, updateWork, deleteWork, getChaptersForWork, hashToken } from "@/lib/store";
+import { getWork, updateWork, deleteWork, getChaptersForWork, sanitizeWork } from "@/lib/store";
+import { verifyEditToken } from "@/lib/auth-helpers";
+
+const ALLOWED_UPDATE_FIELDS = ["title", "author", "summary", "rating", "fandoms", "relationships", "characters", "freeforms"];
 
 export async function GET(
   _request: NextRequest,
@@ -12,9 +15,7 @@ export async function GET(
   }
 
   const chapters = await getChaptersForWork(id);
-  const { editToken: _, ...sanitized } = work;
-
-  return NextResponse.json({ work: sanitized, chapters });
+  return NextResponse.json({ work: sanitizeWork(work), chapters });
 }
 
 export async function PUT(
@@ -25,23 +26,11 @@ export async function PUT(
   const body = await request.json();
   const { editToken, ...updates } = body;
 
-  if (!editToken) {
-    return NextResponse.json({ error: "Edit token required" }, { status: 401 });
-  }
+  const result = await verifyEditToken(id, editToken);
+  if (!result.ok) return result.response;
 
-  const work = await getWork(id);
-  if (!work) {
-    return NextResponse.json({ error: "Work not found" }, { status: 404 });
-  }
-
-  if (hashToken(editToken) !== work.editToken) {
-    return NextResponse.json({ error: "Invalid edit token" }, { status: 403 });
-  }
-
-  // Only allow updating safe fields
   const allowedUpdates: Record<string, unknown> = {};
-  const allowed = ["title", "author", "summary", "rating", "fandoms", "relationships", "characters", "freeforms"];
-  for (const key of allowed) {
+  for (const key of ALLOWED_UPDATE_FIELDS) {
     if (key in updates) {
       allowedUpdates[key] = updates[key];
     }
@@ -52,8 +41,7 @@ export async function PUT(
     return NextResponse.json({ error: "Update failed" }, { status: 500 });
   }
 
-  const { editToken: _, ...sanitized } = updated;
-  return NextResponse.json({ work: sanitized });
+  return NextResponse.json({ work: sanitizeWork(updated) });
 }
 
 export async function DELETE(
@@ -62,20 +50,9 @@ export async function DELETE(
 ) {
   const { id } = await params;
   const body = await request.json();
-  const { editToken } = body;
 
-  if (!editToken) {
-    return NextResponse.json({ error: "Edit token required" }, { status: 401 });
-  }
-
-  const work = await getWork(id);
-  if (!work) {
-    return NextResponse.json({ error: "Work not found" }, { status: 404 });
-  }
-
-  if (hashToken(editToken) !== work.editToken) {
-    return NextResponse.json({ error: "Invalid edit token" }, { status: 403 });
-  }
+  const result = await verifyEditToken(id, body.editToken);
+  if (!result.ok) return result.response;
 
   await deleteWork(id);
   return NextResponse.json({ success: true });

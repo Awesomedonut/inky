@@ -2,6 +2,9 @@
 
 import { useState, Suspense } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
+import TokenPrompt from "@/components/TokenPrompt";
+import FormatToggle from "@/components/FormatToggle";
+import { getErrorMessage } from "@/lib/types";
 
 function NewChapterInner() {
   const params = useParams();
@@ -18,38 +21,7 @@ function NewChapterInner() {
   const [error, setError] = useState("");
 
   if (!token) {
-    return (
-      <div className="max-w-md mx-auto">
-        <h1 className="text-2xl font-bold text-gray-800 mb-4">
-          Add Chapter
-        </h1>
-        <p className="text-gray-600 mb-4">
-          Enter the edit token you received when you created this work.
-        </p>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            const input = (
-              e.currentTarget.elements.namedItem("token") as HTMLInputElement
-            ).value;
-            setToken(input);
-          }}
-        >
-          <input
-            name="token"
-            type="text"
-            placeholder="Edit token"
-            className="w-full px-3 py-2 border border-gray-300 rounded mb-3 focus:outline-none focus:ring-2 focus:ring-teal-500"
-          />
-          <button
-            type="submit"
-            className="px-4 py-2 bg-teal-700 text-white rounded hover:bg-teal-800"
-          >
-            Continue
-          </button>
-        </form>
-      </div>
-    );
+    return <TokenPrompt title="Add Chapter" onSubmit={setToken} />;
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -73,7 +45,7 @@ function NewChapterInner() {
 
       router.push(`/works/${id}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
+      setError(getErrorMessage(err));
     } finally {
       setSubmitting(false);
     }
@@ -107,30 +79,7 @@ function NewChapterInner() {
           <label className="block text-sm font-semibold text-gray-700 mb-1">
             Content <span className="text-teal-600">*</span>
           </label>
-          <div className="mb-2 inline-flex rounded border border-gray-300 p-1 text-sm">
-            <button
-              type="button"
-              onClick={() => setFormat("rich_text")}
-              className={`rounded px-3 py-1 ${
-                format === "rich_text"
-                  ? "bg-teal-700 text-white"
-                  : "text-gray-700 hover:bg-gray-100"
-              }`}
-            >
-              Rich Text
-            </button>
-            <button
-              type="button"
-              onClick={() => setFormat("html")}
-              className={`rounded px-3 py-1 ${
-                format === "html"
-                  ? "bg-teal-700 text-white"
-                  : "text-gray-700 hover:bg-gray-100"
-              }`}
-            >
-              HTML
-            </button>
-          </div>
+          <FormatToggle format={format} onChange={setFormat} />
           <textarea
             value={body}
             onChange={(e) => setBody(e.target.value)}
@@ -143,22 +92,6 @@ function NewChapterInner() {
                 : "Write your chapter here..."
             }
           />
-          <p className="text-xs text-gray-500 mt-1">
-            {format === "html" ? (
-              <>
-                HTML mode supports safe tags like{" "}
-                <code className="bg-gray-100 px-1 rounded">
-                  p, em, strong, a, ul, li, h1-h6
-                </code>
-                .
-              </>
-            ) : (
-              <>
-                Use <code className="bg-gray-100 px-1 rounded">*text*</code> for{" "}
-                <em>italics</em>.
-              </>
-            )}
-          </p>
         </div>
 
         <div className="flex gap-3">

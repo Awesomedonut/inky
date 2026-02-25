@@ -3,13 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
-
-interface Comment {
-  id: string;
-  name: string;
-  body: string;
-  createdAt: string;
-}
+import { Comment, getErrorMessage } from "@/lib/types";
 
 interface CommentSectionProps {
   workId: string;
@@ -73,7 +67,7 @@ export default function CommentSection({ workId }: CommentSectionProps) {
       setTurnstileToken("");
       turnstileRef.current?.reset();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
+      setError(getErrorMessage(err));
     } finally {
       setSubmitting(false);
     }

@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import TagInput from "./TagInput";
-import { RATINGS } from "@/lib/types";
+import FormatToggle from "./FormatToggle";
+import { RATINGS, getErrorMessage } from "@/lib/types";
 
 interface WorkFormProps {
   mode: "create" | "edit";
@@ -110,7 +111,7 @@ export default function WorkForm({ mode, editToken, initialData }: WorkFormProps
         router.push(`/works/${initialData?.id}`);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
+      setError(getErrorMessage(err));
     } finally {
       setSubmitting(false);
     }
@@ -273,30 +274,7 @@ export default function WorkForm({ mode, editToken, initialData }: WorkFormProps
             <label className="block text-sm font-semibold text-gray-700 mb-1">
               Content <span className="text-teal-600">*</span>
             </label>
-            <div className="mb-2 inline-flex rounded border border-gray-300 p-1 text-sm">
-              <button
-                type="button"
-                onClick={() => setChapterFormat("rich_text")}
-                className={`rounded px-3 py-1 ${
-                  chapterFormat === "rich_text"
-                    ? "bg-teal-700 text-white"
-                    : "text-gray-700 hover:bg-gray-100"
-                }`}
-              >
-                Rich Text
-              </button>
-              <button
-                type="button"
-                onClick={() => setChapterFormat("html")}
-                className={`rounded px-3 py-1 ${
-                  chapterFormat === "html"
-                    ? "bg-teal-700 text-white"
-                    : "text-gray-700 hover:bg-gray-100"
-                }`}
-              >
-                HTML
-              </button>
-            </div>
+            <FormatToggle format={chapterFormat} onChange={setChapterFormat} />
             <textarea
               value={chapterBody}
               onChange={(e) => setChapterBody(e.target.value)}
@@ -309,22 +287,6 @@ export default function WorkForm({ mode, editToken, initialData }: WorkFormProps
                   : "Write your story here..."
               }
             />
-            <p className="text-xs text-gray-500 mt-1">
-              {chapterFormat === "html" ? (
-                <>
-                  HTML mode supports safe tags like{" "}
-                  <code className="bg-gray-100 px-1 rounded">
-                    p, em, strong, a, ul, li, h1-h6
-                  </code>
-                  .
-                </>
-              ) : (
-                <>
-                  Use <code className="bg-gray-100 px-1 rounded">*text*</code> for{" "}
-                  <em>italics</em>.
-                </>
-              )}
-            </p>
           </div>
         </>
       )}

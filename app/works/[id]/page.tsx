@@ -6,16 +6,9 @@ import CommentSection from "@/components/CommentSection";
 import KudosButton from "@/components/KudosButton";
 import HitTracker from "@/components/HitTracker";
 import FormattedText from "@/components/FormattedText";
+import TagList from "@/components/TagList";
 
 export const dynamic = "force-dynamic";
-
-const ratingColors: Record<string, string> = {
-  General: "bg-green-600",
-  Teen: "bg-yellow-500",
-  Mature: "bg-orange-500",
-  Explicit: "bg-red-700",
-  "Not Rated": "bg-gray-500",
-};
 
 export default async function WorkPage({
   params,
@@ -40,48 +33,14 @@ export default async function WorkPage({
         </p>
 
         {/* Tags */}
-        <div className="flex flex-wrap gap-1 mb-3 text-sm">
-          <span
-            className={`px-2 py-0.5 rounded text-white text-xs font-semibold ${ratingColors[work.rating] || "bg-gray-500"}`}
-          >
-            {work.rating}
-          </span>
-          {work.fandoms.map((tag) => (
-            <Link
-              key={tag}
-              href={`/works?tag=${encodeURIComponent(tag)}`}
-              className="px-2 py-0.5 bg-teal-100 text-teal-800 rounded hover:bg-teal-200"
-            >
-              {tag}
-            </Link>
-          ))}
-          {work.relationships.map((tag) => (
-            <Link
-              key={tag}
-              href={`/works?tag=${encodeURIComponent(tag)}`}
-              className="px-2 py-0.5 bg-blue-100 text-blue-800 rounded hover:bg-blue-200"
-            >
-              {tag}
-            </Link>
-          ))}
-          {work.characters.map((tag) => (
-            <Link
-              key={tag}
-              href={`/works?tag=${encodeURIComponent(tag)}`}
-              className="px-2 py-0.5 bg-green-100 text-green-800 rounded hover:bg-green-200"
-            >
-              {tag}
-            </Link>
-          ))}
-          {work.freeforms.map((tag) => (
-            <Link
-              key={tag}
-              href={`/works?tag=${encodeURIComponent(tag)}`}
-              className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded hover:bg-gray-200"
-            >
-              {tag}
-            </Link>
-          ))}
+        <div className="mb-3">
+          <TagList
+            rating={work.rating}
+            fandoms={work.fandoms}
+            relationships={work.relationships}
+            characters={work.characters}
+            freeforms={work.freeforms}
+          />
         </div>
 
         {/* Summary */}
@@ -144,15 +103,7 @@ export default async function WorkPage({
       )}
 
       {/* Chapter navigation */}
-      <ChapterNav
-        workId={id}
-        chapters={chapters.map((c) => ({
-          id: c.id,
-          title: c.title,
-          position: c.position,
-        }))}
-        currentPosition={1}
-      />
+      <ChapterNav workId={id} chapters={chapters} currentPosition={1} />
 
       {/* Chapter content */}
       {firstChapter && (
@@ -172,15 +123,7 @@ export default async function WorkPage({
       )}
 
       {/* Chapter navigation (bottom) */}
-      <ChapterNav
-        workId={id}
-        chapters={chapters.map((c) => ({
-          id: c.id,
-          title: c.title,
-          position: c.position,
-        }))}
-        currentPosition={1}
-      />
+      <ChapterNav workId={id} chapters={chapters} currentPosition={1} />
 
       {/* Comments */}
       <CommentSection workId={id} />

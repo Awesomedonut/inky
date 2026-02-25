@@ -50,7 +50,7 @@ export default async function HomePage() {
       ) : (
         <div>
           {recent.map((work) => (
-            <WorkCard key={work.id} {...work} />
+            <WorkCard key={work.id} work={work} />
           ))}
         </div>
       )}

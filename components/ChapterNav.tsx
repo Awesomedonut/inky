@@ -1,14 +1,9 @@
 import Link from "next/link";
-
-interface ChapterInfo {
-  id: string;
-  title: string;
-  position: number;
-}
+import { Chapter } from "@/lib/types";
 
 interface ChapterNavProps {
   workId: string;
-  chapters: ChapterInfo[];
+  chapters: Pick<Chapter, "id" | "title" | "position">[];
   currentPosition: number;
 }
 

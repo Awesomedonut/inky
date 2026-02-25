@@ -34,15 +34,7 @@ export default async function ChapterPage({
       </div>
 
       {/* Chapter navigation (top) */}
-      <ChapterNav
-        workId={id}
-        chapters={chapters.map((c) => ({
-          id: c.id,
-          title: c.title,
-          position: c.position,
-        }))}
-        currentPosition={chapter.position}
-      />
+      <ChapterNav workId={id} chapters={chapters} currentPosition={chapter.position} />
 
       {/* Chapter content */}
       <div className="bg-white border border-gray-300 rounded p-6 mb-6">
@@ -58,15 +50,7 @@ export default async function ChapterPage({
       </div>
 
       {/* Chapter navigation (bottom) */}
-      <ChapterNav
-        workId={id}
-        chapters={chapters.map((c) => ({
-          id: c.id,
-          title: c.title,
-          position: c.position,
-        }))}
-        currentPosition={chapter.position}
-      />
+      <ChapterNav workId={id} chapters={chapters} currentPosition={chapter.position} />
 
       {/* Comments */}
       <CommentSection workId={id} />
