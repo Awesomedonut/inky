@@ -7,9 +7,9 @@ interface TokenPromptProps {
 
 export default function TokenPrompt({ title, onSubmit }: TokenPromptProps) {
   return (
-    <div className="max-w-md mx-auto">
-      <h1 className="text-2xl font-bold text-gray-800 mb-4">{title}</h1>
-      <p className="text-gray-600 mb-4">
+    <div className="archive-panel max-w-xl mx-auto p-5">
+      <h1 className="text-3xl text-teal-900 mb-3">{title}</h1>
+      <p className="text-slate-600 mb-4">
         Enter the edit token you received when you created this work.
       </p>
       <form
@@ -25,11 +25,11 @@ export default function TokenPrompt({ title, onSubmit }: TokenPromptProps) {
           name="token"
           type="text"
           placeholder="Edit token"
-          className="w-full px-3 py-2 border border-gray-300 rounded mb-3 focus:outline-none focus:ring-2 focus:ring-teal-500"
+          className="archive-input mb-3"
         />
         <button
           type="submit"
-          className="px-4 py-2 bg-teal-700 text-white rounded hover:bg-teal-800"
+          className="archive-button"
         >
           Continue
         </button>

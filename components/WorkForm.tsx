@@ -120,30 +120,29 @@ export default function WorkForm({ mode, editToken, initialData }: WorkFormProps
   // Show the edit token modal after creating
   if (createdToken) {
     return (
-      <div className="bg-yellow-50 border border-yellow-400 rounded p-6 max-w-2xl mx-auto">
-        <h2 className="text-xl font-bold text-yellow-800 mb-3">
+      <div className="bg-yellow-50 border border-yellow-400 p-6 max-w-2xl mx-auto">
+        <h2 className="text-2xl text-yellow-800 mb-3">
           Work Created Successfully!
         </h2>
         <p className="text-yellow-800 mb-4">
           Save this edit token — it&apos;s the <strong>only way</strong> to edit
           or delete your work later. This will not be shown again.
         </p>
-        <div className="bg-white border border-yellow-300 rounded p-3 mb-4 font-mono text-sm break-all">
+        <div className="bg-white border border-yellow-300 p-3 mb-4 font-mono text-sm break-all">
           {createdToken}
         </div>
         <div className="flex gap-3">
           <button
             onClick={() => navigator.clipboard.writeText(createdToken)}
-            className="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700"
+            className="archive-button"
           >
             Copy Token
           </button>
           <button
             onClick={() => {
-              const workId = title; // We need the work ID; let's fetch it
               router.push("/");
             }}
-            className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
+            className="archive-button-secondary"
           >
             Go to Home
           </button>
@@ -153,9 +152,9 @@ export default function WorkForm({ mode, editToken, initialData }: WorkFormProps
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
+    <form onSubmit={handleSubmit} className="archive-panel max-w-4xl mx-auto p-5">
       {error && (
-        <div className="bg-red-50 border border-red-300 text-red-800 rounded p-3 mb-4">
+        <div className="bg-red-50 border border-red-300 text-red-800 p-3 mb-4">
           {error}
         </div>
       )}
@@ -170,7 +169,7 @@ export default function WorkForm({ mode, editToken, initialData }: WorkFormProps
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
-          className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
+          className="archive-input"
           placeholder="Work title"
         />
       </div>
@@ -184,7 +183,7 @@ export default function WorkForm({ mode, editToken, initialData }: WorkFormProps
           type="text"
           value={author}
           onChange={(e) => setAuthor(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
+          className="archive-input"
           placeholder="Anonymous"
         />
       </div>
@@ -197,7 +196,7 @@ export default function WorkForm({ mode, editToken, initialData }: WorkFormProps
         <select
           value={rating}
           onChange={(e) => setRating(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
+          className="archive-select"
         >
           {RATINGS.map((r) => (
             <option key={r} value={r}>
@@ -216,7 +215,7 @@ export default function WorkForm({ mode, editToken, initialData }: WorkFormProps
           value={summary}
           onChange={(e) => setSummary(e.target.value)}
           rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
+          className="archive-textarea"
           placeholder="A brief summary of your work"
         />
       </div>
@@ -266,7 +265,7 @@ export default function WorkForm({ mode, editToken, initialData }: WorkFormProps
               type="text"
               value={chapterTitle}
               onChange={(e) => setChapterTitle(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="archive-input"
               placeholder="Optional chapter title"
             />
           </div>
@@ -280,7 +279,7 @@ export default function WorkForm({ mode, editToken, initialData }: WorkFormProps
               onChange={(e) => setChapterBody(e.target.value)}
               required
               rows={15}
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500 font-mono"
+              className="archive-textarea font-mono"
               placeholder={
                 chapterFormat === "html"
                   ? "Write your story using HTML tags..."
@@ -295,7 +294,7 @@ export default function WorkForm({ mode, editToken, initialData }: WorkFormProps
         <button
           type="submit"
           disabled={submitting}
-          className="px-6 py-2 bg-teal-700 text-white rounded hover:bg-teal-800 disabled:opacity-50"
+          className="archive-button disabled:opacity-50"
         >
           {submitting
             ? "Saving..."
@@ -306,7 +305,7 @@ export default function WorkForm({ mode, editToken, initialData }: WorkFormProps
         <button
           type="button"
           onClick={() => router.back()}
-          className="px-6 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+          className="archive-button-secondary"
         >
           Cancel
         </button>

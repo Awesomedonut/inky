@@ -11,24 +11,38 @@ export default function AuthButton() {
 
   if (session?.user) {
     return (
-      <div className="flex items-center gap-2 text-sm">
-        <span className="text-teal-200">{session.user.name}</span>
-        <button
-          onClick={() => signOut()}
-          className="hover:text-teal-200 underline underline-offset-2"
-        >
-          Sign Out
-        </button>
+      <div id="greeting">
+        <ul className="user actions">
+          <li><span>{session.user.name}</span></li>
+          <li>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                signOut();
+              }}
+            >
+              Log Out
+            </button>
+          </li>
+        </ul>
       </div>
     );
   }
 
   return (
-    <button
-      onClick={() => signIn("google")}
-      className="hover:text-teal-200 text-sm"
-    >
-      Sign in with Google
-    </button>
+    <div id="login" className="dropdown">
+      <p className="user actions">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            signIn("google");
+          }}
+        >
+          Log In
+        </button>
+      </p>
+    </div>
   );
 }

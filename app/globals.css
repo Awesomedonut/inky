@@ -3,3 +3,38 @@
 @theme inline {
   --font-sans: var(--font-geist-sans);
 }
+@import "../otwarchive/public/stylesheets/site/2.0/01-core.css";
+@import "../otwarchive/public/stylesheets/site/2.0/02-elements.css";
+@import "../otwarchive/public/stylesheets/site/2.0/03-region-header.css";
+@import "../otwarchive/public/stylesheets/site/2.0/04-region-dashboard.css";
+@import "../otwarchive/public/stylesheets/site/2.0/05-region-main.css";
+@import "../otwarchive/public/stylesheets/site/2.0/06-region-footer.css";
+@import "../otwarchive/public/stylesheets/site/2.0/07-interactions.css";
+@import "../otwarchive/public/stylesheets/site/2.0/08-actions.css";
+@import "../otwarchive/public/stylesheets/site/2.0/09-roles-states.css";
+@import "../otwarchive/public/stylesheets/site/2.0/10-types-groups.css";
+@import "../otwarchive/public/stylesheets/site/2.0/11-group-listbox.css";
+@import "../otwarchive/public/stylesheets/site/2.0/12-group-meta.css";
+@import "../otwarchive/public/stylesheets/site/2.0/13-group-blurb.css";
+@import "../otwarchive/public/stylesheets/site/2.0/14-group-preface.css";
+@import "../otwarchive/public/stylesheets/site/2.0/15-group-comments.css";
+@import "../otwarchive/public/stylesheets/site/2.0/16-zone-system.css";
+@import "../otwarchive/public/stylesheets/site/2.0/17-zone-home.css";
+@import "../otwarchive/public/stylesheets/site/2.0/18-zone-searchbrowse.css";
+@import "../otwarchive/public/stylesheets/site/2.0/19-zone-tags.css";
+@import "../otwarchive/public/stylesheets/site/2.0/20-zone-translation.css";
+@import "../otwarchive/public/stylesheets/site/2.0/21-userstuff.css";
+@import "../otwarchive/public/stylesheets/site/2.0/22-system-messages.css";
+@import "../otwarchive/public/stylesheets/site/2.0/23-role-translator.css";
+@import "../otwarchive/public/stylesheets/site/2.0/24-role-admin.css";
+@import "../otwarchive/public/stylesheets/site/2.0/25-media-midsize.css";
+@import "../otwarchive/public/stylesheets/site/2.0/26-media-narrow.css";
+
+#header .user.actions button {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}

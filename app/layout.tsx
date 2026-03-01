@@ -22,44 +22,56 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} font-sans antialiased bg-gray-50 text-gray-900`}>
+      <body className={`${geistSans.variable} antialiased`}>
         <SessionProvider>
-          {/* Header */}
-          <header className="bg-teal-900 text-white shadow">
-            <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-              <Link href="/" className="text-2xl font-bold tracking-tight hover:text-teal-200">
-                Inky
-              </Link>
-              <nav className="flex items-center gap-4 text-sm">
-                <Link href="/works" className="hover:text-teal-200">
-                  Browse
+          <div id="outer" className="wrapper">
+            <ul id="skiplinks">
+              <li><a href="#main">Main Content</a></li>
+            </ul>
+            <header id="header" className="region">
+              <h1 className="heading">
+                <Link href="/">
+                  <span>Inky</span>
+                  <sup> beta</sup>
+                  <img src="/images/ao3_logos/logo_42.png" alt="Inky" className="logo" />
                 </Link>
-                <Link href="/about" className="hover:text-teal-200">
-                  About
-                </Link>
-                <Link href="/devlog" className="hover:text-teal-200">
-                  Devlog
-                </Link>
-                <Link
-                  href="/works/new"
-                  className="px-3 py-1.5 bg-white text-teal-900 rounded font-semibold hover:bg-teal-100"
-                >
-                  Post a Work
-                </Link>
-                <AuthButton />
+              </h1>
+              <AuthButton />
+              <nav aria-label="Site">
+                <ul className="primary navigation actions">
+                  <li><Link href="/works">Browse</Link></li>
+                  <li><Link href="/works/new">Post</Link></li>
+                  <li><Link href="/about">About</Link></li>
+                  <li><Link href="/devlog">Devlog</Link></li>
+                  <li className="search">
+                    <form action="/works" method="get" className="search">
+                      <fieldset>
+                        <p>
+                          <input type="text" name="q" placeholder="Search Works" />
+                          <button className="primary" type="submit">Search</button>
+                        </p>
+                      </fieldset>
+                    </form>
+                  </li>
+                </ul>
               </nav>
+              <div className="clear"></div>
+            </header>
+            <div id="inner" className="wrapper">
+              <div id="main" className="region" role="main">
+                {children}
+                <div className="clear"></div>
+              </div>
             </div>
-          </header>
-
-          {/* Main */}
-          <main className="max-w-6xl mx-auto px-4 py-6">{children}</main>
-
-          {/* Footer */}
-          <footer className="border-t border-gray-200 mt-12">
-            <div className="max-w-6xl mx-auto px-4 py-4 text-center text-xs text-gray-500">
-              Inky: A writing archive proof of concept/prototype
-            </div>
-          </footer>
+            <footer id="footer" role="contentinfo" className="region">
+              <ul className="navigation actions" role="navigation">
+                <li><Link href="/works">Works</Link></li>
+                <li><Link href="/about">About</Link></li>
+                <li><Link href="/devlog">Devlog</Link></li>
+              </ul>
+              <p className="copyright">Inky is a prototype archive interface.</p>
+            </footer>
+          </div>
         </SessionProvider>
       </body>
     </html>

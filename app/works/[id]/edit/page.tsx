@@ -50,12 +50,12 @@ function EditWorkInner() {
   }, [id]);
 
   if (loading) {
-    return <p className="text-gray-500">Loading...</p>;
+    return <p className="text-slate-500">Loading...</p>;
   }
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-300 text-red-800 rounded p-4">
+      <div className="bg-red-50 border border-red-300 text-red-800 p-4">
         {error}
       </div>
     );
@@ -67,7 +67,7 @@ function EditWorkInner() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Edit Work</h1>
+      <h1 className="text-3xl text-teal-900 mb-4">Edit Work</h1>
       {workData && (
         <WorkForm mode="edit" editToken={token} initialData={workData} />
       )}

@@ -37,11 +37,7 @@ export default function KudosButton({ workId, initialCount }: KudosButtonProps) 
     <button
       onClick={handleClick}
       disabled={hasKudosed || isSubmitting}
-      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-        hasKudosed
-          ? "bg-red-100 text-red-700 cursor-default"
-          : "bg-gray-100 text-gray-700 hover:bg-red-50 hover:text-red-600"
-      }`}
+      className="kudos"
       title={hasKudosed ? "You already left kudos!" : "Leave kudos"}
     >
       <span>{hasKudosed ? "\u2764\uFE0F" : "\u2661"}</span>

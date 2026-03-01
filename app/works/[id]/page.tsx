@@ -23,17 +23,24 @@ export default async function WorkPage({
   const firstChapter = chapters[0];
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="work show region">
       <HitTracker workId={id} />
-      {/* Work header */}
-      <div className="bg-white border border-gray-300 rounded p-6 mb-6">
-        <h1 className="text-2xl font-bold text-teal-900 mb-1">{work.title}</h1>
-        <p className="text-gray-600 mb-3">
-          by <span className="font-medium">{work.author}</span>
-        </p>
 
-        {/* Tags */}
-        <div className="mb-3">
+      <div className="preface group">
+        <h2 className="title heading">{work.title}</h2>
+        <h3 className="byline heading">by {work.author}</h3>
+        {work.summary && (
+          <div className="summary module">
+            <h3 className="heading">Summary:</h3>
+            <blockquote className="userstuff">
+              <p>{work.summary}</p>
+            </blockquote>
+          </div>
+        )}
+      </div>
+
+      <div className="wrapper">
+        <dl className="work meta group">
           <TagList
             rating={work.rating}
             fandoms={work.fandoms}
@@ -41,59 +48,35 @@ export default async function WorkPage({
             characters={work.characters}
             freeforms={work.freeforms}
           />
-        </div>
-
-        {/* Summary */}
-        {work.summary && (
-          <div className="text-gray-700 text-sm mb-3">
-            <strong>Summary:</strong>
-            <p className="mt-1">{work.summary}</p>
-          </div>
-        )}
-
-        {/* Stats */}
-        <div className="text-xs text-gray-500 flex gap-3">
-          <span>Words: {work.wordCount.toLocaleString()}</span>
-          <span>Chapters: {work.chapterCount}</span>
-          <span>Hits: {(work.hitCount || 0).toLocaleString()}</span>
-          <span>Kudos: {(work.kudosCount || 0).toLocaleString()}</span>
-          <span>Published: {new Date(work.createdAt).toLocaleDateString()}</span>
-          {work.updatedAt !== work.createdAt && (
-            <span>
-              Updated: {new Date(work.updatedAt).toLocaleDateString()}
-            </span>
-          )}
-        </div>
-
-        {/* Actions */}
-        <div className="flex gap-2 mt-4 pt-3 border-t border-gray-200">
-          <KudosButton workId={id} initialCount={work.kudosCount || 0} />
-          <Link
-            href={`/works/${id}/edit`}
-            className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200"
-          >
-            Edit Work
-          </Link>
-          <Link
-            href={`/works/${id}/chapters/new`}
-            className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200"
-          >
-            Add Chapter
-          </Link>
-        </div>
+          <dt className="stats">Stats:</dt>
+          <dd className="stats">
+            <dl>
+              <dt className="words">Words:</dt>
+              <dd className="words">{work.wordCount.toLocaleString()}</dd>
+              <dt className="chapters">Chapters:</dt>
+              <dd className="chapters">{work.chapterCount}</dd>
+              <dt className="hits">Hits:</dt>
+              <dd className="hits">{(work.hitCount || 0).toLocaleString()}</dd>
+              <dt className="kudos">Kudos:</dt>
+              <dd className="kudos">{(work.kudosCount || 0).toLocaleString()}</dd>
+            </dl>
+          </dd>
+        </dl>
       </div>
 
-      {/* Chapter index (if multi-chapter) */}
+      <ul className="work navigation actions">
+        <li><KudosButton workId={id} initialCount={work.kudosCount || 0} /></li>
+        <li><Link href={`/works/${id}/edit`}>Edit Work</Link></li>
+        <li><Link href={`/works/${id}/chapters/new`}>Add Chapter</Link></li>
+      </ul>
+
       {chapters.length > 1 && (
-        <div className="bg-white border border-gray-300 rounded p-4 mb-6">
-          <h3 className="font-semibold text-gray-800 mb-2">Chapters</h3>
-          <ol className="list-decimal list-inside text-sm space-y-1">
+        <div className="chapter index group">
+          <h3 className="heading">Chapter Index</h3>
+          <ol>
             {chapters.map((ch) => (
               <li key={ch.id}>
-                <Link
-                  href={`/works/${id}/chapters/${ch.id}`}
-                  className="text-teal-700 hover:underline"
-                >
+                <Link href={`/works/${id}/chapters/${ch.id}`}>
                   {ch.title || `Chapter ${ch.position}`}
                 </Link>
               </li>
@@ -102,18 +85,12 @@ export default async function WorkPage({
         </div>
       )}
 
-      {/* Chapter navigation */}
       <ChapterNav workId={id} chapters={chapters} currentPosition={1} />
 
-      {/* Chapter content */}
       {firstChapter && (
-        <div className="bg-white border border-gray-300 rounded p-6 mb-6">
-          {firstChapter.title && (
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              {firstChapter.title}
-            </h2>
-          )}
-          <div className="prose max-w-none whitespace-pre-wrap text-gray-800 leading-relaxed">
+        <div className="chapter" id={`chapter-${firstChapter.id}`}>
+          {firstChapter.title && <h3 className="title">{firstChapter.title}</h3>}
+          <div className="userstuff">
             <FormattedText
               text={firstChapter.body}
               format={firstChapter.format || "rich_text"}
@@ -122,10 +99,7 @@ export default async function WorkPage({
         </div>
       )}
 
-      {/* Chapter navigation (bottom) */}
       <ChapterNav workId={id} chapters={chapters} currentPosition={1} />
-
-      {/* Comments */}
       <CommentSection workId={id} />
     </div>
   );

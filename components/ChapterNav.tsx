@@ -20,40 +20,22 @@ export default function ChapterNav({
   const next = currentIdx < sorted.length - 1 ? sorted[currentIdx + 1] : null;
 
   return (
-    <div className="flex items-center justify-between py-3 border-t border-b border-gray-200 my-4">
-      <div>
+    <ul className="chapter navigation actions" role="navigation">
+      <li>
         {prev ? (
-          <Link
-            href={`/works/${workId}/chapters/${prev.id}`}
-            className="px-3 py-1.5 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm"
-          >
-            &laquo; Previous
-          </Link>
+          <Link href={`/works/${workId}/chapters/${prev.id}`}>&laquo; Previous Chapter</Link>
         ) : (
-          <span className="px-3 py-1.5 text-gray-400 text-sm">
-            &laquo; Previous
-          </span>
+          <span>&laquo; Previous Chapter</span>
         )}
-      </div>
-
-      <div className="text-sm text-gray-600">
-        Chapter {currentPosition} of {chapters.length}
-      </div>
-
-      <div>
+      </li>
+      <li>Chapter {currentPosition} of {chapters.length}</li>
+      <li>
         {next ? (
-          <Link
-            href={`/works/${workId}/chapters/${next.id}`}
-            className="px-3 py-1.5 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm"
-          >
-            Next &raquo;
-          </Link>
+          <Link href={`/works/${workId}/chapters/${next.id}`}>Next Chapter &raquo;</Link>
         ) : (
-          <span className="px-3 py-1.5 text-gray-400 text-sm">
-            Next &raquo;
-          </span>
+          <span>Next Chapter &raquo;</span>
         )}
-      </div>
-    </div>
+      </li>
+    </ul>
   );
 }

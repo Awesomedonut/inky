@@ -52,16 +52,16 @@ function NewChapterInner() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Add Chapter</h1>
+    <div className="max-w-4xl mx-auto">
+      <h1 className="text-3xl text-teal-900 mb-4">Add Chapter</h1>
 
       {error && (
-        <div className="bg-red-50 border border-red-300 text-red-800 rounded p-3 mb-4">
+        <div className="bg-red-50 border border-red-300 text-red-800 p-3 mb-4">
           {error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="archive-panel p-5">
         <div className="mb-4">
           <label className="block text-sm font-semibold text-gray-700 mb-1">
             Chapter Title
@@ -70,7 +70,7 @@ function NewChapterInner() {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="archive-input"
             placeholder="Optional chapter title"
           />
         </div>
@@ -85,7 +85,7 @@ function NewChapterInner() {
             onChange={(e) => setBody(e.target.value)}
             required
             rows={15}
-            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-teal-500 font-mono"
+            className="archive-textarea font-mono"
             placeholder={
               format === "html"
                 ? "Write your chapter using HTML tags..."
@@ -98,14 +98,14 @@ function NewChapterInner() {
           <button
             type="submit"
             disabled={submitting}
-            className="px-6 py-2 bg-teal-700 text-white rounded hover:bg-teal-800 disabled:opacity-50"
+            className="archive-button disabled:opacity-50"
           >
             {submitting ? "Adding..." : "Add Chapter"}
           </button>
           <button
             type="button"
             onClick={() => router.back()}
-            className="px-6 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+            className="archive-button-secondary"
           >
             Cancel
           </button>

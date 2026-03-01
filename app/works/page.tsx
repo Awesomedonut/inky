@@ -4,7 +4,6 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import WorkCard from "@/components/WorkCard";
 import TagFilter from "@/components/TagFilter";
-
 import { SanitizedWork } from "@/lib/types";
 
 function buildWorksUrl(filters: { tag?: string; q?: string; page?: number }) {
@@ -44,88 +43,69 @@ function BrowseWorksInner() {
   }
 
   return (
-    <div className="flex gap-6 flex-col md:flex-row">
-      {/* Sidebar */}
-      <div className="md:w-64 flex-shrink-0">
-        <TagFilter />
-      </div>
+    <div className="works-index">
+      <h2 className="heading">Works</h2>
+      <h3 className="heading">
+        Found {total} work{total !== 1 ? "s" : ""}
+      </h3>
 
-      {/* Main content */}
-      <div className="flex-1">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold text-gray-800">Browse Works</h1>
-          <span className="text-sm text-gray-500">
-            {total} work{total !== 1 ? "s" : ""}
-          </span>
-        </div>
-
-        {/* Search */}
-        <form onSubmit={handleSearch} className="mb-4 flex gap-2">
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by title, summary, or author..."
-            className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-          />
-          <button
-            type="submit"
-            className="px-4 py-2 bg-teal-700 text-white rounded text-sm hover:bg-teal-800"
-          >
-            Search
-          </button>
+      <fieldset className="form">
+        <legend>Search Works</legend>
+        <form onSubmit={handleSearch}>
+          <p>
+            <label htmlFor="work-search">Search:</label>
+            <input
+              id="work-search"
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Title, summary, or author"
+            />
+            <button type="submit">Search</button>
+          </p>
         </form>
+      </fieldset>
 
-        {tag && (
-          <div className="mb-4 text-sm text-gray-600">
-            Filtering by tag: <span className="font-semibold">{tag}</span>
-          </div>
-        )}
+      <TagFilter />
 
-        {works.length === 0 ? (
-          <div className="text-center py-8 bg-white border border-gray-200 rounded">
-            <p className="text-gray-500">No works found.</p>
-          </div>
-        ) : (
-          <>
-            {works.map((work) => (
-              <WorkCard key={work.id} work={work} />
-            ))}
+      {tag && <p className="notice">Filtering by tag: {tag}</p>}
 
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="flex justify-center gap-2 mt-6">
-                {page > 1 && (
-                  <button
-                    onClick={() => router.push(buildWorksUrl({ tag, q, page: page - 1 }))}
-                    className="px-3 py-1 bg-gray-200 rounded text-sm hover:bg-gray-300"
-                  >
-                    Previous
-                  </button>
-                )}
-                <span className="px-3 py-1 text-sm text-gray-600">
-                  Page {page} of {totalPages}
-                </span>
-                {page < totalPages && (
-                  <button
-                    onClick={() => router.push(buildWorksUrl({ tag, q, page: page + 1 }))}
-                    className="px-3 py-1 bg-gray-200 rounded text-sm hover:bg-gray-300"
-                  >
-                    Next
-                  </button>
-                )}
-              </div>
-            )}
-          </>
-        )}
-      </div>
+      {works.length === 0 ? (
+        <p className="notice">No works found.</p>
+      ) : (
+        <ol className="work index group">
+          {works.map((work) => (
+            <WorkCard key={work.id} work={work} />
+          ))}
+        </ol>
+      )}
+
+      {totalPages > 1 && (
+        <ul className="pagination actions">
+          {page > 1 && (
+            <li>
+              <button onClick={() => router.push(buildWorksUrl({ tag, q, page: page - 1 }))}>
+                Previous
+              </button>
+            </li>
+          )}
+          <li>Page {page} of {totalPages}</li>
+          {page < totalPages && (
+            <li>
+              <button onClick={() => router.push(buildWorksUrl({ tag, q, page: page + 1 }))}>
+                Next
+              </button>
+            </li>
+          )}
+        </ul>
+      )}
     </div>
   );
 }
 
 export default function BrowseWorksPage() {
   return (
-    <Suspense fallback={<div className="text-center py-8 text-gray-500">Loading...</div>}>
+    <Suspense fallback={<div>Loading...</div>}>
       <BrowseWorksInner />
     </Suspense>
   );

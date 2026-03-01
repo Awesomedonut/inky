@@ -23,25 +23,17 @@ export default async function ChapterPage({
   const chapters = await getChaptersForWork(id);
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="work chapter-show">
       <HitTracker workId={id} />
-      {/* Work title breadcrumb */}
-      <div className="mb-4">
-        <Link href={`/works/${id}`} className="text-teal-700 hover:underline text-sm">
-          &laquo; {work.title}
-        </Link>
-        <span className="text-gray-400 text-sm mx-2">by {work.author}</span>
-      </div>
+      <p className="navigation">
+        <Link href={`/works/${id}`}>&laquo; {work.title}</Link>
+      </p>
 
-      {/* Chapter navigation (top) */}
       <ChapterNav workId={id} chapters={chapters} currentPosition={chapter.position} />
 
-      {/* Chapter content */}
-      <div className="bg-white border border-gray-300 rounded p-6 mb-6">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">
-          {chapter.title || `Chapter ${chapter.position}`}
-        </h2>
-        <div className="prose max-w-none whitespace-pre-wrap text-gray-800 leading-relaxed">
+      <div className="chapter" id={`chapter-${chapter.id}`}>
+        <h3 className="title">{chapter.title || `Chapter ${chapter.position}`}</h3>
+        <div className="userstuff">
           <FormattedText
             text={chapter.body}
             format={chapter.format || "rich_text"}
@@ -49,10 +41,7 @@ export default async function ChapterPage({
         </div>
       </div>
 
-      {/* Chapter navigation (bottom) */}
       <ChapterNav workId={id} chapters={chapters} currentPosition={chapter.position} />
-
-      {/* Comments */}
       <CommentSection workId={id} />
     </div>
   );

@@ -37,7 +37,6 @@ export default function TagInput({
 
   useEffect(() => {
     if (input.length < 2) {
-      setSuggestions([]);
       return;
     }
 
@@ -85,11 +84,11 @@ export default function TagInput({
       <label className="block text-sm font-semibold text-gray-700 mb-1">
         {label}
       </label>
-      <div className="flex flex-wrap gap-1 p-2 border border-gray-300 rounded bg-white min-h-[42px]">
+      <div className="flex flex-wrap gap-1 p-2 border border-slate-300 bg-white min-h-[42px]">
         {value.map((tag) => (
           <span
             key={tag}
-            className="inline-flex items-center gap-1 px-2 py-0.5 bg-teal-100 text-teal-800 rounded text-sm"
+            className="inline-flex items-center gap-1 px-2 py-0.5 bg-teal-100 text-teal-800 border border-teal-200 text-sm"
           >
             {tag}
             <button
@@ -105,7 +104,11 @@ export default function TagInput({
           type="text"
           value={input}
           onChange={(e) => {
-            setInput(e.target.value);
+            const nextValue = e.target.value;
+            setInput(nextValue);
+            if (nextValue.length < 2) {
+              setSuggestions([]);
+            }
             setShowSuggestions(true);
           }}
           onFocus={() => setShowSuggestions(true)}
@@ -114,8 +117,8 @@ export default function TagInput({
           className="flex-1 min-w-[120px] outline-none text-sm"
         />
       </div>
-      {showSuggestions && suggestions.length > 0 && (
-        <div className="border border-gray-200 rounded mt-1 bg-white shadow-lg z-10 relative">
+      {showSuggestions && input.length >= 2 && suggestions.length > 0 && (
+        <div className="border border-slate-300 mt-1 bg-white shadow-lg z-10 relative">
           {suggestions.map((s) => (
             <button
               key={s}

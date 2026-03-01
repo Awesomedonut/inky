@@ -8,11 +8,11 @@ interface FormatToggleProps {
 export default function FormatToggle({ format, onChange }: FormatToggleProps) {
   return (
     <>
-      <div className="mb-2 inline-flex rounded border border-gray-300 p-1 text-sm">
+      <div className="mb-2 inline-flex border border-slate-300 p-1 text-sm bg-slate-50">
         <button
           type="button"
           onClick={() => onChange("rich_text")}
-          className={`rounded px-3 py-1 ${
+          className={`px-3 py-1 ${
             format === "rich_text"
               ? "bg-teal-700 text-white"
               : "text-gray-700 hover:bg-gray-100"
@@ -23,7 +23,7 @@ export default function FormatToggle({ format, onChange }: FormatToggleProps) {
         <button
           type="button"
           onClick={() => onChange("html")}
-          className={`rounded px-3 py-1 ${
+          className={`px-3 py-1 ${
             format === "html"
               ? "bg-teal-700 text-white"
               : "text-gray-700 hover:bg-gray-100"
