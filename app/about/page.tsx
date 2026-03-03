@@ -2,7 +2,7 @@ export default function AboutPage() {
   return (
     <div className="max-w-3xl mx-auto">
       <div className="archive-panel p-6">
-        <h1 className="text-3xl text-teal-900 mb-4">About Inky</h1>
+        <h1 className="text-3xl text-gray-800 mb-4">About Inky</h1>
 
         <div className="prose max-w-none text-gray-700 space-y-4">
           <p>
@@ -19,7 +19,7 @@ export default function AboutPage() {
           </p>
     
 
-          <h2 className="text-lg font-semibold text-teal-800 mt-6">My principles</h2>
+          <h2 className="text-lg font-semibold text-gray-700 mt-6">My principles</h2>
          <ul>
               <li>No NSFW content of minors</li>
   <li>Free to use</li>
@@ -30,7 +30,7 @@ export default function AboutPage() {
   
 </ul>
 
-          <h2 className="text-lg font-semibold text-teal-800 mt-6">Contact</h2>
+          <h2 className="text-lg font-semibold text-gray-700 mt-6">Contact</h2>
           <p>
             I&apos;m at @greenstick1234 on twitter and u/foodiepower on reddit!
             Feedback, suggestions, comments, bugs, etc all appreciated! 

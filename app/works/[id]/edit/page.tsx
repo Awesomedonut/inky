@@ -55,7 +55,7 @@ function EditWorkInner() {
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-300 text-red-800 p-4">
+      <div className="bg-teal-50 border border-teal-300 text-gray-800 p-4">
         {error}
       </div>
     );
@@ -67,7 +67,7 @@ function EditWorkInner() {
 
   return (
     <div>
-      <h1 className="text-3xl text-teal-900 mb-4">Edit Work</h1>
+      <h1 className="text-3xl text-gray-800 mb-4">Edit Work</h1>
       {workData && (
         <WorkForm mode="edit" editToken={token} initialData={workData} />
       )}

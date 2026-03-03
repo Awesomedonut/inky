@@ -154,7 +154,7 @@ export default function WorkForm({ mode, editToken, initialData }: WorkFormProps
   return (
     <form onSubmit={handleSubmit} className="archive-panel max-w-4xl mx-auto p-5">
       {error && (
-        <div className="bg-red-50 border border-red-300 text-red-800 p-3 mb-4">
+        <div className="bg-teal-50 border border-teal-300 text-teal-900 p-3 mb-4">
           {error}
         </div>
       )}

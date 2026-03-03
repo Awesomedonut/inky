@@ -8,7 +8,7 @@ interface TokenPromptProps {
 export default function TokenPrompt({ title, onSubmit }: TokenPromptProps) {
   return (
     <div className="archive-panel max-w-xl mx-auto p-5">
-      <h1 className="text-3xl text-teal-900 mb-3">{title}</h1>
+      <h1 className="text-3xl text-gray-800 mb-3">{title}</h1>
       <p className="text-slate-600 mb-4">
         Enter the edit token you received when you created this work.
       </p>

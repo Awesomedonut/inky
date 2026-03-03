@@ -53,10 +53,10 @@ function NewChapterInner() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h1 className="text-3xl text-teal-900 mb-4">Add Chapter</h1>
+      <h1 className="text-3xl text-gray-800 mb-4">Add Chapter</h1>
 
       {error && (
-        <div className="bg-red-50 border border-red-300 text-red-800 p-3 mb-4">
+        <div className="bg-teal-50 border border-teal-300 text-gray-800 p-3 mb-4">
           {error}
         </div>
       )}

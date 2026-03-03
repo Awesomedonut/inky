@@ -2,7 +2,7 @@ export default function DevlogPage() {
   return (
     <div className="max-w-3xl mx-auto">
       <div className="archive-panel p-6">
-        <h1 className="text-3xl text-teal-900 mb-4">Devlog</h1>
+        <h1 className="text-3xl text-gray-800 mb-4">Devlog</h1>
 
         <div className="prose max-w-none text-gray-700 space-y-4">
         </div>
