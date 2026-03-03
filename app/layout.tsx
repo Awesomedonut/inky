@@ -37,7 +37,7 @@ export default function RootLayout({
                 <Link href="/">
                   <span>Inky</span>
                   <sup> beta</sup>
-                  <img src="/images/ao3_logos/logo_42.png" alt="Inky" className="logo" />
+
                 </Link>
               </h1>
               <AuthButton />

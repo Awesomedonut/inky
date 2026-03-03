@@ -11,9 +11,10 @@ interface TagListProps {
 function renderTagList(tags: string[]) {
   return (
     <ul className="commas">
-      {tags.map((tag) => (
+      {tags.map((tag, idx) => (
         <li key={tag}>
           <Link href={`/works?tag=${encodeURIComponent(tag)}`}>{tag}</Link>
+          {idx < tags.length - 1 ? ", " : ""}
         </li>
       ))}
     </ul>
