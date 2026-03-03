@@ -19,12 +19,24 @@ export default function GoogleAnalytics({ measurementId }: Props) {
       ? `${pathname}?${searchParams.toString()}`
       : pathname;
 
-    const gtag = (window as Window & { gtag?: (...args: unknown[]) => void }).gtag;
-    gtag?.("event", "page_view", {
+    const pageViewParams = {
       page_path: url,
       page_location: window.location.href,
       page_title: document.title,
-    });
+    };
+
+    const win = window as Window & {
+      dataLayer?: unknown[];
+      gtag?: (...args: unknown[]) => void;
+    };
+
+    if (typeof win.gtag === "function") {
+      win.gtag("event", "page_view", pageViewParams);
+      return;
+    }
+
+    win.dataLayer = win.dataLayer || [];
+    win.dataLayer.push(["event", "page_view", pageViewParams]);
   }, [measurementId, pathname, searchParams]);
 
   if (!measurementId) return null;
