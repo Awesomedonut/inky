@@ -19,24 +19,17 @@ export default function GoogleAnalytics({ measurementId }: Props) {
       ? `${pathname}?${searchParams.toString()}`
       : pathname;
 
-    const pageViewParams = {
-      page_path: url,
-      page_location: window.location.href,
-      page_title: document.title,
-    };
-
     const win = window as Window & {
-      dataLayer?: unknown[];
       gtag?: (...args: unknown[]) => void;
     };
 
     if (typeof win.gtag === "function") {
-      win.gtag("event", "page_view", pageViewParams);
-      return;
+      win.gtag("event", "page_view", {
+        page_path: url,
+        page_location: window.location.href,
+        page_title: document.title,
+      });
     }
-
-    win.dataLayer = win.dataLayer || [];
-    win.dataLayer.push(["event", "page_view", pageViewParams]);
   }, [measurementId, pathname, searchParams]);
 
   if (!measurementId) return null;
@@ -53,7 +46,7 @@ export default function GoogleAnalytics({ measurementId }: Props) {
           function gtag(){dataLayer.push(arguments);}
           window.gtag = gtag;
           gtag('js', new Date());
-          gtag('config', '${measurementId}', { send_page_view: false });
+          gtag('config', '${measurementId}');
         `}
       </Script>
     </>
