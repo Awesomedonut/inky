@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 import Link from "next/link";
 import SessionProvider from "@/components/SessionProvider";
 import AuthButton from "@/components/AuthButton";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,9 +21,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+
   return (
     <html lang="en">
       <body className={`${geistSans.variable} antialiased`}>
+        <GoogleAnalytics measurementId={gaMeasurementId} />
         <SessionProvider>
           <div id="outer" className="wrapper">
             <ul id="skiplinks">

@@ -40,3 +40,7 @@ next-env.d.ts
 
 # data storage
 /data/
+
+# local OTW clone
+/otwarchive/
+/otw/
