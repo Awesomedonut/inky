@@ -31,7 +31,7 @@ export default function TagList({ rating, fandoms, relationships, characters, fr
 
       {fandoms.length > 0 && (
         <>
-          <dt className="fandom tags">Fandoms:</dt>
+          <dt className="fandom tags">{fandoms.length === 1 ? "Fandom:" : "Fandoms:"}</dt>
           <dd className="fandom tags">{renderTagList(fandoms)}</dd>
         </>
       )}

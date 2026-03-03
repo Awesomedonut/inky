@@ -17,6 +17,8 @@ export default function AboutPage() {
             conversations about hate spam, botted comment abuse, and the spread
             of NSFW underage RPF content.
           </p>
+
+          <p>This site is heavily under construction! Join the discord https://discord.gg/hxSA6Gftwt for more dev updates.</p>
     
 
           <h2 className="text-lg font-semibold text-gray-700 mt-6">My principles</h2>
