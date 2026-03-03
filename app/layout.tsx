@@ -12,7 +12,7 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Inky: A Writing Archive",
+  title: "Inky 2.0",
   description: "Post, read, and share writing",
 };
 
