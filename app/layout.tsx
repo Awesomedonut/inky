@@ -10,8 +10,6 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
-
 export const metadata: Metadata = {
   title: "Inky 2.0",
   description: "Post, read, and share writing",
@@ -25,16 +23,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {GA_ID && (
-          <>
-            <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_ID}');`,
-              }}
-            />
-          </>
-        )}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-SH8WF9BPJL" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-SH8WF9BPJL');",
+          }}
+        />
       </head>
       <body className={`${geistSans.variable} antialiased`}>
         <SessionProvider>
