@@ -13,14 +13,39 @@ export default function FormattedText({
   text: string;
   format?: "rich_text" | "html";
 }) {
-  const richTextLooksLikeHtml = /<\/?(p|br|div|span|em|strong|blockquote|ul|ol|li|h[1-6]|a)\b/i.test(text);
+  const decodeBasicEntities = (value: string) =>
+    value
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, "\"")
+      .replace(/&#39;/g, "'")
+      .replace(/&amp;/g, "&");
+
+  const normalizedText = text
+    .replace(/\r\n?/g, "\n")
+    .replace(/\\n/g, "\n");
+
+  const richTextLooksLikeHtml = /<\/?(p|br|div|span|em|strong|blockquote|ul|ol|li|h[1-6]|a)\b/i.test(
+    normalizedText
+  );
+  const richTextLooksLikeEscapedHtml = /&lt;\/?(p|br|div|span|em|strong|blockquote|ul|ol|li|h[1-6]|a)\b/i.test(
+    normalizedText
+  );
 
   if (format === "html") {
-    return <span dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }} />;
+    return <span dangerouslySetInnerHTML={{ __html: sanitizeHtml(normalizedText) }} />;
   }
 
   if (richTextLooksLikeHtml) {
-    return <span dangerouslySetInnerHTML={{ __html: sanitizeHtml(text) }} />;
+    return <span dangerouslySetInnerHTML={{ __html: sanitizeHtml(normalizedText) }} />;
+  }
+
+  if (richTextLooksLikeEscapedHtml) {
+    return (
+      <span
+        dangerouslySetInnerHTML={{ __html: sanitizeHtml(decodeBasicEntities(normalizedText)) }}
+      />
+    );
   }
 
   const italicize = (value: string, keyPrefix: string): React.ReactNode[] => {
@@ -45,7 +70,7 @@ export default function FormattedText({
   };
 
   // Legacy rich text stories rely on plain newline spacing.
-  const paragraphs = text.split(/\n{2,}/).filter((p) => p.length > 0);
+  const paragraphs = normalizedText.split(/\n{2,}/).filter((p) => p.length > 0);
 
   if (paragraphs.length === 0) {
     return null;
