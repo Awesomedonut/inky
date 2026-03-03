@@ -3,7 +3,6 @@ import { Geist } from "next/font/google";
 import Link from "next/link";
 import SessionProvider from "@/components/SessionProvider";
 import AuthButton from "@/components/AuthButton";
-import GoogleAnalytics from "@/components/GoogleAnalytics";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -25,8 +24,24 @@ export default function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+        {gaMeasurementId && (
+          <>
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`} />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${gaMeasurementId}');
+                `,
+              }}
+            />
+          </>
+        )}
+      </head>
       <body className={`${geistSans.variable} antialiased`}>
-        <GoogleAnalytics measurementId={gaMeasurementId} />
         <SessionProvider>
           <div id="outer" className="wrapper">
             <ul id="skiplinks">
