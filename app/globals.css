@@ -599,7 +599,7 @@ a:focus-visible {
   padding-bottom: 0.5em;
 }
 
-.work-grid {
+.work-detail-grid {
   display: grid;
   grid-template-columns: 280px minmax(0, 1fr);
   gap: 4em;
@@ -619,7 +619,7 @@ a:focus-visible {
 }
 
 @media (max-width: 900px) {
-  .work-grid { grid-template-columns: 1fr; gap: 2em; }
+  .work-detail-grid { grid-template-columns: 1fr; gap: 2em; }
   .work-sidebar { position: static; }
 }
 

@@ -44,7 +44,7 @@ export default async function WorkPage({
         )}
       </header>
 
-      <div className="work-grid">
+      <div className="work-detail-grid">
         <aside className="work-sidebar">
           <div className="wrapper">
             <dl className="work meta group">
