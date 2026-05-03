@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import TagInput from "./TagInput";
 import FormatToggle from "./FormatToggle";
+import TipTapEditor from "./TipTapEditor";
 import { RATINGS, getErrorMessage } from "@/lib/types";
 
 interface WorkFormProps {
@@ -274,18 +275,22 @@ export default function WorkForm({ mode, editToken, initialData }: WorkFormProps
               Content <span className="text-teal-600">*</span>
             </label>
             <FormatToggle format={chapterFormat} onChange={setChapterFormat} />
-            <textarea
-              value={chapterBody}
-              onChange={(e) => setChapterBody(e.target.value)}
-              required
-              rows={15}
-              className="archive-textarea font-mono"
-              placeholder={
-                chapterFormat === "html"
-                  ? "Write your story using HTML tags..."
-                  : "Write your story here..."
-              }
-            />
+            {chapterFormat === "rich_text" ? (
+              <TipTapEditor
+                value={chapterBody}
+                onChange={setChapterBody}
+                placeholder="Begin your story…"
+              />
+            ) : (
+              <textarea
+                value={chapterBody}
+                onChange={(e) => setChapterBody(e.target.value)}
+                required
+                rows={15}
+                className="archive-textarea font-mono"
+                placeholder="Write your story using HTML tags..."
+              />
+            )}
           </div>
         </>
       )}

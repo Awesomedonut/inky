@@ -1,25 +1,39 @@
+type Entry = {
+  version: string;
+  date: string;
+  body: string;
+};
+
+const ENTRIES: Entry[] = [
+  { version: "3.1", date: "May 2, 2026", body: "Testing out different colours." },
+  { version: "3.0", date: "Apr 3, 2026", body: "Massive UI overhaul." },
+  { version: "2.1", date: "Mar 3, 2026", body: "Formatting bug fix." },
+  { version: "2.0", date: "Mar 2, 2026", body: "Massive UI change." },
+  { version: "1.2", date: "Feb 24, 2026", body: "Add HTML posting option, separate from rich text." },
+  { version: "1.1", date: "Feb 20, 2026", body: "Cloudflare safety / bot protection and Google SSO for safety." },
+  { version: "1.0", date: "Feb 20, 2026", body: "Created this project. Has basic upload story and comment functionality, all anon." },
+];
+
 export default function DevlogPage() {
   return (
-    <div className="max-w-3xl mx-auto">
-      <div className="archive-panel p-6">
-        <h1 className="text-3xl text-gray-800 mb-4">Devlog</h1>
+    <article className="devlog">
+      <header className="devlog-header">
+        <p className="eyebrow">Changelog</p>
+        <h1 className="devlog-title">Devlog</h1>
+        <p className="devlog-lede">A running record of what changed and why — version by version.</p>
+      </header>
 
-        <div className="prose max-w-none text-gray-700 space-y-4">
-        </div>
-
-        <p>Version 3.1 (may 2nd 2026): Testing out different colors</p>
-
-        <p>Version 3.0 (apr 3rd 2026): Massive UI overhaul</p>
-        <p>Version 2.1 (mar 3rd 2026): Formatting bug fix</p>
-
-        <p>Version 2.0 (mar 2nd 2026): Massive UI change</p>
-
-        <p>Version 1.2 (feb 24th 2026): Add HTML posting option, seperate from rich text</p>
-
-        <p>Version 1.1 (feb 20th 2026): Cloudfare safety/bot protection and Google SSO for safety</p>
-
-        <p>Version 1.0 (feb 20th 2026): Created this project. Has basic upload story and comment functionality, all anon.</p>
-      </div>
-    </div>
+      <ol className="devlog-list">
+        {ENTRIES.map((e) => (
+          <li key={e.version} className="devlog-entry">
+            <div className="devlog-entry-meta">
+              <span className="devlog-version">v{e.version}</span>
+              <time className="devlog-date">{e.date}</time>
+            </div>
+            <p className="devlog-body">{e.body}</p>
+          </li>
+        ))}
+      </ol>
+    </article>
   );
 }
