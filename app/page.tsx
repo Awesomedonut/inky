@@ -12,6 +12,16 @@ export default async function HomePage() {
 
   return (
     <div className="home">
+      <section className="hero">
+        <p className="hero-sub">
+          A place to post, discover, and share creative writing.
+        </p>
+        <div className="hero-actions">
+          <Link href="/works" className="btn-primary">Browse works</Link>
+          <Link href="/works/new" className="btn-secondary">Post something</Link>
+        </div>
+      </section>
+
       <section className="recent-section">
         <div className="section-head">
           <h2>Recent</h2>
