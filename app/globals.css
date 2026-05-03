@@ -517,6 +517,13 @@ dl.meta {
   margin: 1em 0;
 }
 
+/* Clear floats from dl.meta so subsequent elements aren't pushed under */
+.wrapper::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 dl.meta dt {
   float: left; clear: left; width: 25%; min-width: 9em;
   font-weight: 600; font-size: 0.72em;
