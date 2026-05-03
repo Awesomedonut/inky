@@ -12,34 +12,35 @@ export default async function HomePage() {
 
   return (
     <div className="home">
-      <div className="splash">
-        <div className="browse module">
-          <h3 className="heading">Find Your Favorites</h3>
-          <p className="note">
-            Browse all posted works or post your own.
-          </p>
-          <ul className="navigation actions" role="navigation">
-            <li><Link href="/works">Browse Works</Link></li>
-            <li><Link href="/works/new">Post Work</Link></li>
-          </ul>
+      <section className="hero">
+        <h1 className="hero-title">
+          Stories worth<br />
+          your time.
+        </h1>
+        <p className="hero-sub">
+          A place to post, discover, and share creative writing.
+        </p>
+        <div className="hero-actions">
+          <Link href="/works" className="btn-primary">Browse works</Link>
+          <Link href="/works/new" className="btn-secondary">Post something</Link>
         </div>
+      </section>
 
-        <div className="random readings module">
-          <h3 className="heading">
-            <span className="title">Recent Works</span>
-            <span className="link"><Link href="/works">View All</Link></span>
-          </h3>
-          {recent.length === 0 ? (
-            <p className="note">No works posted yet.</p>
-          ) : (
-            <ol className="reading work index group">
-              {recent.map((work) => (
-                <WorkCard key={work.id} work={work} />
-              ))}
-            </ol>
-          )}
+      <section className="recent-section">
+        <div className="section-head">
+          <h2>Recent</h2>
+          <Link href="/works" className="section-link">View all →</Link>
         </div>
-      </div>
+        {recent.length === 0 ? (
+          <p className="empty-state">No works posted yet. Be the first.</p>
+        ) : (
+          <div className="work-grid">
+            {recent.map((work) => (
+              <WorkCard key={work.id} work={work} />
+            ))}
+          </div>
+        )}
+      </section>
     </div>
   );
 }

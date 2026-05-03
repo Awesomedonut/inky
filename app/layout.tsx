@@ -1,13 +1,20 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import Link from "next/link";
 import SessionProvider from "@/components/SessionProvider";
 import AuthButton from "@/components/AuthButton";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const outfit = Outfit({
+  variable: "--font-display",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const plusJakarta = Plus_Jakarta_Sans({
+  variable: "--font-body",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -30,55 +37,44 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${geistSans.variable} antialiased`}>
+      <body className={`${outfit.variable} ${plusJakarta.variable} antialiased`}>
         <SessionProvider>
-          <div id="outer" className="wrapper">
-            <ul id="skiplinks">
-              <li><a href="#main">Main Content</a></li>
-            </ul>
-            <header id="header" className="region">
-              <h1 className="heading">
-                <Link href="/">
-                  <span>Inky</span>
-                  <sup> beta</sup>
-                </Link>
-              </h1>
-              <AuthButton />
-              <nav aria-label="Site">
-                <ul className="primary navigation actions">
-                  <li><Link href="/works">Browse</Link></li>
-                  <li><Link href="/works/new">Post</Link></li>
-                  <li><Link href="/about">About</Link></li>
-                  <li><Link href="/devlog">Devlog</Link></li>
-                  <li className="search">
-                    <form action="/works" method="get" className="search">
-                      <fieldset>
-                        <p>
-                          <input type="text" name="q" placeholder="Search Works" />
-                          <button className="primary" type="submit">Search</button>
-                        </p>
-                      </fieldset>
-                    </form>
-                  </li>
-                </ul>
+          <ul id="skiplinks">
+            <li><a href="#main">Main Content</a></li>
+          </ul>
+
+          <header className="site-header">
+            <div className="header-inner">
+              <Link href="/" className="site-logo">inky</Link>
+              <nav className="site-nav" aria-label="Site">
+                <Link href="/works">Browse</Link>
+                <Link href="/works/new">Post</Link>
+                <Link href="/about">About</Link>
+                <Link href="/devlog">Devlog</Link>
               </nav>
-              <div className="clear"></div>
-            </header>
-            <div id="inner" className="wrapper">
-              <div id="main" className="region" role="main">
-                {children}
-                <div className="clear"></div>
+              <div className="header-right">
+                <form action="/works" method="get" className="header-search">
+                  <input type="text" name="q" placeholder="Search..." />
+                </form>
+                <AuthButton />
               </div>
             </div>
-            <footer id="footer" role="contentinfo" className="region">
-              <ul className="navigation actions" role="navigation">
-                <li><Link href="/works">Works</Link></li>
-                <li><Link href="/about">About</Link></li>
-                <li><Link href="/devlog">Devlog</Link></li>
-              </ul>
-              <p className="copyright">Inky is a prototype archive interface.</p>
-            </footer>
-          </div>
+          </header>
+
+          <main id="main" className="site-main">
+            {children}
+          </main>
+
+          <footer className="site-footer" role="contentinfo">
+            <div className="footer-inner">
+              <span className="footer-logo">inky</span>
+              <nav className="footer-nav">
+                <Link href="/works">Works</Link>
+                <Link href="/about">About</Link>
+                <Link href="/devlog">Devlog</Link>
+              </nav>
+            </div>
+          </footer>
         </SessionProvider>
       </body>
     </html>

@@ -73,11 +73,11 @@ function BrowseWorksInner() {
       {works.length === 0 ? (
         <p className="notice">No works found.</p>
       ) : (
-        <ol className="work index group">
+        <div className="work-grid">
           {works.map((work) => (
             <WorkCard key={work.id} work={work} />
           ))}
-        </ol>
+        </div>
       )}
 
       {totalPages > 1 && (

@@ -11,38 +11,32 @@ export default function AuthButton() {
 
   if (session?.user) {
     return (
-      <div id="greeting">
-        <ul className="user actions">
-          <li><span>{session.user.name}</span></li>
-          <li>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                signOut();
-              }}
-            >
-              Log Out
-            </button>
-          </li>
-        </ul>
+      <div className="auth-area">
+        <span className="auth-name">{session.user.name}</span>
+        <button
+          type="button"
+          className="auth-btn"
+          onClick={(e) => {
+            e.preventDefault();
+            signOut();
+          }}
+        >
+          Log Out
+        </button>
       </div>
     );
   }
 
   return (
-    <div id="login" className="dropdown">
-      <p className="user actions">
-        <button
-          type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            signIn("google");
-          }}
-        >
-          Log In
-        </button>
-      </p>
-    </div>
+    <button
+      type="button"
+      className="auth-btn"
+      onClick={(e) => {
+        e.preventDefault();
+        signIn("google");
+      }}
+    >
+      Log In
+    </button>
   );
 }

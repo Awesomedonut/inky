@@ -20,77 +20,75 @@ function ratingClass(rating: string) {
   }
 }
 
-function commaList(tags: string[], type: string) {
-  return tags.map((tag, idx) => (
-    <li key={`${type}-${tag}`}>
-      <Link href={`/works?tag=${encodeURIComponent(tag)}`}>{tag}</Link>
-      {idx < tags.length - 1 ? ", " : ""}
-    </li>
-  ));
+function formatCount(n: number) {
+  if (n >= 1000) return `${(n / 1000).toFixed(1).replace(/\.0$/, "")}k`;
+  return n.toString();
 }
 
 export default function WorkCard({ work }: WorkCardProps) {
-  return (
-    <li id={`work_${work.id}`} className="work blurb group" role="article">
-      <div className="header module">
-        <ul className="required-tags">
-          <li>
-            <span className={ratingClass(work.rating)}>
-              <span className="text">{work.rating}</span>
-            </span>
-          </li>
-        </ul>
+  const allTags = [
+    ...work.fandoms,
+    ...work.relationships.slice(0, 2),
+    ...work.freeforms.slice(0, 3),
+  ];
 
-        <h4 className="heading">
-          <Link href={`/works/${work.id}`}>{work.title}</Link> by{" "}
-          <Link href={`/works?q=${encodeURIComponent(work.author)}`} rel="author">
+  return (
+    <article className="work-card" id={`work_${work.id}`}>
+      <div className="work-card-inner">
+        <div className="work-card-head">
+          <span className={`work-rating ${ratingClass(work.rating)}`}>
+            {work.rating}
+          </span>
+          <span className="work-meta-sep">·</span>
+          <span className="work-fandom">
+            {work.fandoms.slice(0, 2).map((f, i) => (
+              <span key={f}>
+                <Link href={`/works?tag=${encodeURIComponent(f)}`}>{f}</Link>
+                {i < Math.min(work.fandoms.length, 2) - 1 ? ", " : ""}
+              </span>
+            ))}
+          </span>
+        </div>
+
+        <h3 className="work-title">
+          <Link href={`/works/${work.id}`}>{work.title}</Link>
+        </h3>
+
+        <p className="work-byline">
+          by{" "}
+          <Link href={`/works?q=${encodeURIComponent(work.author)}`}>
             {work.author}
           </Link>
-        </h4>
+        </p>
 
-        <p className="datetime">{new Date(work.createdAt).toLocaleDateString()}</p>
+        {work.summary && (
+          <p className="work-summary">{work.summary}</p>
+        )}
 
-        <dl className="stats">
-          <dt className="words">Words:</dt>
-          <dd className="words">{work.wordCount.toLocaleString()}</dd>
-          <dt className="chapters">Chapters:</dt>
-          <dd className="chapters">{work.chapterCount}</dd>
-          <dt className="hits">Hits:</dt>
-          <dd className="hits">{(work.hitCount || 0).toLocaleString()}</dd>
-          <dt className="kudos">Kudos:</dt>
-          <dd className="kudos">{(work.kudosCount || 0).toLocaleString()}</dd>
-        </dl>
+        <div className="work-tags">
+          {allTags.slice(0, 5).map((tag) => (
+            <Link
+              key={tag}
+              href={`/works?tag=${encodeURIComponent(tag)}`}
+              className="work-tag"
+            >
+              {tag}
+            </Link>
+          ))}
+        </div>
+
+        <div className="work-stats">
+          <span>{formatCount(work.wordCount)} words</span>
+          <span>{work.chapterCount} ch</span>
+          <span>{formatCount(work.kudosCount || 0)} kudos</span>
+          <time dateTime={work.createdAt}>
+            {new Date(work.createdAt).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+            })}
+          </time>
+        </div>
       </div>
-
-      <h5 className="fandoms heading">Fandoms:</h5>
-      <ul className="fandoms commas">{commaList(work.fandoms, "fandom")}</ul>
-
-      {work.relationships.length > 0 && (
-        <>
-          <h5 className="relationships heading">Relationships:</h5>
-          <ul className="relationships commas">{commaList(work.relationships, "relationship")}</ul>
-        </>
-      )}
-
-      {work.characters.length > 0 && (
-        <>
-          <h5 className="characters heading">Characters:</h5>
-          <ul className="characters commas">{commaList(work.characters, "character")}</ul>
-        </>
-      )}
-
-      {work.freeforms.length > 0 && (
-        <>
-          <h5 className="freeforms heading">Additional Tags:</h5>
-          <ul className="tags commas">{commaList(work.freeforms, "freeform")}</ul>
-        </>
-      )}
-
-      {work.summary && (
-        <blockquote className="userstuff summary">
-          <p>{work.summary}</p>
-        </blockquote>
-      )}
-    </li>
+    </article>
   );
 }
