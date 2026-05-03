@@ -26,7 +26,7 @@
 /* ---- Reset / Base ---- */
 
 body {
-  background: var(--c-bg);
+  background: #fffdf9;
   color: var(--c-fg);
   font-family: var(--font-body), -apple-system, BlinkMacSystemFont, sans-serif;
   line-height: 1.6;
@@ -50,7 +50,7 @@ a {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--c-bg);
+  background: #fffdf9;
   border-bottom: 1px solid var(--c-border);
 }
 
@@ -167,7 +167,7 @@ a {
 /* ---- Home: Hero ---- */
 
 .hero {
-  padding: 5em 0 4em;
+  padding: 2.5em 0 2em;
   max-width: 640px;
 }
 

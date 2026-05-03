@@ -28,50 +28,6 @@ export default async function WorkPage({
       <HitTracker workId={id} />
 
       <div className="work">
-        <h3 className="landmark heading">Actions</h3>
-        <ul className="work navigation actions">
-          <li className="chapter entire"><Link href={`/works/${id}`}>Entire Work</Link></li>
-          {nextChapter && (
-            <li className="chapter next">
-              <Link href={`/works/${id}/chapters/${nextChapter.id}`}>Next Chapter &raquo;</Link>
-            </li>
-          )}
-          {chapters.length > 1 && (
-            <li className="chapter"><a href="#chapter_index">Chapter Index</a></li>
-          )}
-          <li className="comments"><a href="#comments">Comments</a></li>
-          <li className="edit"><Link href={`/works/${id}/edit`}>Edit</Link></li>
-          <li className="add"><Link href={`/works/${id}/chapters/new`}>Add Chapter</Link></li>
-          <li className="kudos"><KudosButton workId={id} initialCount={work.kudosCount || 0} /></li>
-        </ul>
-
-        <div className="wrapper">
-          <dl className="work meta group">
-            <TagList
-              rating={work.rating}
-              fandoms={work.fandoms}
-              relationships={work.relationships}
-              characters={work.characters}
-              freeforms={work.freeforms}
-            />
-            <dt className="language">Language:</dt>
-            <dd className="language">English</dd>
-            <dt className="stats">Stats:</dt>
-            <dd className="stats">
-              <dl className="stats">
-                <dt className="words">Words:</dt>
-                <dd className="words">{work.wordCount.toLocaleString()}</dd>
-                <dt className="chapters">Chapters:</dt>
-                <dd className="chapters">{work.chapterCount}/{work.chapterCount}</dd>
-                <dt className="kudos">Kudos:</dt>
-                <dd className="kudos">{(work.kudosCount || 0).toLocaleString()}</dd>
-                <dt className="hits">Hits:</dt>
-                <dd className="hits">{(work.hitCount || 0).toLocaleString()}</dd>
-              </dl>
-            </dd>
-          </dl>
-        </div>
-
         <div id="workskin">
           <div className="preface group">
             <h2 className="title heading">{work.title}</h2>
@@ -85,6 +41,49 @@ export default async function WorkPage({
               </div>
             )}
           </div>
+
+          <div className="wrapper">
+            <dl className="work meta group">
+              <TagList
+                rating={work.rating}
+                fandoms={work.fandoms}
+                relationships={work.relationships}
+                characters={work.characters}
+                freeforms={work.freeforms}
+              />
+              <dt className="language">Language:</dt>
+              <dd className="language">English</dd>
+              <dt className="stats">Stats:</dt>
+              <dd className="stats">
+                <dl className="stats">
+                  <dt className="words">Words:</dt>
+                  <dd className="words">{work.wordCount.toLocaleString()}</dd>
+                  <dt className="chapters">Chapters:</dt>
+                  <dd className="chapters">{work.chapterCount}/{work.chapterCount}</dd>
+                  <dt className="kudos">Kudos:</dt>
+                  <dd className="kudos">{(work.kudosCount || 0).toLocaleString()}</dd>
+                  <dt className="hits">Hits:</dt>
+                  <dd className="hits">{(work.hitCount || 0).toLocaleString()}</dd>
+                </dl>
+              </dd>
+            </dl>
+          </div>
+
+          <ul className="work navigation actions">
+            <li className="chapter entire"><Link href={`/works/${id}`}>Entire Work</Link></li>
+            {nextChapter && (
+              <li className="chapter next">
+                <Link href={`/works/${id}/chapters/${nextChapter.id}`}>Next Chapter &raquo;</Link>
+              </li>
+            )}
+            {chapters.length > 1 && (
+              <li className="chapter"><a href="#chapter_index">Chapter Index</a></li>
+            )}
+            <li className="comments"><a href="#comments">Comments</a></li>
+            <li className="edit"><Link href={`/works/${id}/edit`}>Edit</Link></li>
+            <li className="add"><Link href={`/works/${id}/chapters/new`}>Add Chapter</Link></li>
+            <li className="kudos"><KudosButton workId={id} initialCount={work.kudosCount || 0} /></li>
+          </ul>
 
           {chapters.length > 1 && (
             <div className="chapter index group" id="chapter_index">
