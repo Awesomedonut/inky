@@ -7,6 +7,7 @@ export default function DevlogPage() {
         <div className="prose max-w-none text-gray-700 space-y-4">
         </div>
 
+        <p>Version 3.0 (apr 3rd 2026): Massive UI overhaul</p>
         <p>Version 2.1 (mar 3rd 2026): Formatting bug fix</p>
 
         <p>Version 2.0 (mar 2nd 2026): Massive UI change</p>

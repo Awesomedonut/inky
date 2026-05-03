@@ -14,10 +14,10 @@
   --c-fg: #1a1a1a;
   --c-fg-2: #555;
   --c-fg-3: #888;
-  --c-bg: #fffdf9;
+  --c-bg: #F8F8FC;
   --c-surface: #fff;
   --c-border: #eee;
-  --c-brand: #e85d04;
+  --c-brand: #818CF8;
 
   --r: 8px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -849,7 +849,7 @@ button.kudos {
 }
 
 button.kudos:hover:not(:disabled) {
-  border-color: #e85d04; color: #e85d04;
+  border-color: #818CF8; color: #818CF8;
 }
 
 button.kudos:disabled { opacity: 0.3; cursor: not-allowed; }
