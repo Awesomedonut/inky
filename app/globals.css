@@ -548,7 +548,7 @@ ul.work.navigation.actions {
   padding: 0.85em 0; margin: 0;
   border-top: 1px solid var(--c-border);
   border-bottom: 1px solid var(--c-border);
-  flex-wrap: wrap; justify-content: center;
+  flex-wrap: wrap;
 }
 
 ul.work.navigation.actions li { display: inline; list-style: none; }
