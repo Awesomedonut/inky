@@ -849,17 +849,17 @@ ul.pagination.actions li button:hover { opacity: 0.8; }
 
 button.kudos {
   display: inline-flex; align-items: center; gap: 0.35em;
-  padding: 0.4em 0.85em; background: transparent;
-  border: 1px solid var(--c-border); border-radius: 6px;
-  cursor: pointer; font: inherit; font-size: 0.84em;
+  padding: 0.4em 0.85em; background: rgba(0,0,0,0.04);
+  border: none; border-radius: 6px;
+  cursor: pointer; font: inherit; font-size: 0.82em;
   font-weight: 500; color: var(--c-fg-2); transition: all 0.15s;
 }
 
 button.kudos:hover:not(:disabled) {
-  border-color: #818CF8; color: #818CF8;
+  background: var(--c-fg); color: var(--c-bg);
 }
 
-button.kudos:disabled { opacity: 0.3; cursor: not-allowed; }
+button.kudos:disabled { opacity: 0.5; cursor: default; }
 
 /* ---- Module (legacy compat) ---- */
 .module { margin: 1em 0; }
