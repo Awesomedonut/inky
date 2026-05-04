@@ -4,6 +4,8 @@ import ChapterNav from "@/components/ChapterNav";
 import CommentSection from "@/components/CommentSection";
 import HitTracker from "@/components/HitTracker";
 import FormattedText from "@/components/FormattedText";
+import ReadingProgress from "@/components/ReadingProgress";
+import ReadingSettings from "@/components/ReadingSettings";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -24,6 +26,8 @@ export default async function ChapterPage({
 
   return (
     <div className="work chapter-show">
+      <ReadingProgress />
+      <ReadingSettings />
       <HitTracker workId={id} />
       <p className="navigation">
         <Link href={`/works/${id}`}>&laquo; {work.title}</Link>

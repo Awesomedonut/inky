@@ -7,6 +7,8 @@ import KudosButton from "@/components/KudosButton";
 import HitTracker from "@/components/HitTracker";
 import FormattedText from "@/components/FormattedText";
 import TagList from "@/components/TagList";
+import ReadingProgress from "@/components/ReadingProgress";
+import ReadingSettings from "@/components/ReadingSettings";
 
 export const dynamic = "force-dynamic";
 
@@ -25,23 +27,25 @@ export default async function WorkPage({
 
   return (
     <div className="work show region">
+      <ReadingProgress />
+      <ReadingSettings />
       <HitTracker workId={id} />
 
-      <div className="work">
-        <div id="workskin">
-          <div className="preface group">
-            <h2 className="title heading">{work.title}</h2>
-            <h3 className="byline heading">{work.author}</h3>
-            {work.summary && (
-              <div className="summary module">
-                <h3 className="heading">Summary:</h3>
-                <blockquote className="userstuff">
-                  <p>{work.summary}</p>
-                </blockquote>
-              </div>
-            )}
+      <header className="work-preface">
+        <h2 className="title heading">{work.title}</h2>
+        <h3 className="byline heading">{work.author}</h3>
+        {work.summary && (
+          <div className="summary module">
+            <h3 className="heading">Summary:</h3>
+            <blockquote className="userstuff">
+              <p>{work.summary}</p>
+            </blockquote>
           </div>
+        )}
+      </header>
 
+      <div className="work-detail-grid">
+        <aside className="work-sidebar">
           <div className="wrapper">
             <dl className="work meta group">
               <TagList
@@ -99,7 +103,9 @@ export default async function WorkPage({
               </ol>
             </div>
           )}
+        </aside>
 
+        <div className="work-reading">
           <ChapterNav workId={id} chapters={chapters} currentPosition={1} />
 
           {firstChapter && (
@@ -115,7 +121,7 @@ export default async function WorkPage({
           )}
 
           <ChapterNav workId={id} chapters={chapters} currentPosition={1} />
-          </div>
+        </div>
       </div>
       <CommentSection workId={id} />
     </div>
