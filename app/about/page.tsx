@@ -5,10 +5,6 @@ export default function AboutPage() {
     <article className="prose-page">
       <header className="prose-page-header">
         <p className="eyebrow">About</p>
-        <h1 className="prose-page-title">Inky is a writing archive built around safety.</h1>
-        <p className="prose-page-lede">
-          A prototype. An interest check. A small archive that takes care of the people who write here.
-        </p>
       </header>
 
       <div className="prose-page-body">
@@ -38,7 +34,7 @@ export default function AboutPage() {
 
         <h2>Contact</h2>
         <p>
-          I&apos;m u/foodiepower on reddit and @whyjs on tumblr. Feedback, suggestions, comments, bugs — all appreciated. If you want to volunteer and help, that would be amazing.
+          I&apos;m u/foodiepower on reddit and @whyjs on tumblr. Feedback, suggestions, comments, bugs are all appreciated. If you want to volunteer and help, that would be amazing!
         </p>
       </div>
     </article>

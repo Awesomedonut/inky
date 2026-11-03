@@ -14,7 +14,7 @@ interface Prefs {
   theme: ReaderTheme;
 }
 
-const DEFAULTS: Prefs = { font: "serif", size: "m", theme: "paper" };
+const DEFAULTS: Prefs = { font: "sans", size: "m", theme: "paper" };
 
 function applyToDOM(prefs: Prefs) {
   document.querySelectorAll<HTMLElement>(".userstuff").forEach((el) => {

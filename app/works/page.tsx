@@ -2,7 +2,6 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import Link from "next/link";
 import WorkCard from "@/components/WorkCard";
 import TagFilter from "@/components/TagFilter";
 import { SanitizedWork } from "@/lib/types";
@@ -45,13 +44,9 @@ function BrowseWorksInner() {
 
   return (
     <div className="works-index">
-      <h2 className="heading">Works</h2>
-      <h3 className="heading">
-        Found {total} work{total !== 1 ? "s" : ""}
-      </h3>
+      <h2 className="heading">{total} work{total !== 1 ? "s" : ""}</h2>
 
       <fieldset className="form">
-        <legend>Search Works</legend>
         <form onSubmit={handleSearch}>
           <p>
             <label htmlFor="work-search">Search:</label>
@@ -72,12 +67,7 @@ function BrowseWorksInner() {
       {tag && <p className="notice">Filtering by tag: {tag}</p>}
 
       {works.length === 0 ? (
-        <div className="empty-state-rich">
-          <div className="empty-mark">¶</div>
-          <h3>Nothing here yet</h3>
-          <p>{tag || q ? "Try a different search or clear your filters." : "Be the first to post a work."}</p>
-          <Link className="btn-primary" href="/works/new">Post a work</Link>
-        </div>
+        <p className="empty-state">No works found.</p>
       ) : (
         <div className="work-grid">
           {works.map((work) => (

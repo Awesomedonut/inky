@@ -45,7 +45,7 @@ export default async function WorkPage({
       </header>
 
       <div className="work-detail-grid">
-        <aside className="work-sidebar">
+        <div className="work-details">
           <div className="wrapper">
             <dl className="work meta group">
               <TagList
@@ -103,7 +103,7 @@ export default async function WorkPage({
               </ol>
             </div>
           )}
-        </aside>
+        </div>
 
         <div className="work-reading">
           <ChapterNav workId={id} chapters={chapters} currentPosition={1} />
