@@ -5,6 +5,7 @@ type Entry = {
 };
 
 const ENTRIES: Entry[] = [
+  { version: "3.3", date: "Nov 2, 2026", body: "uhhh bear with me friends" },
   { version: "3.2", date: "Jun 6, 2026", body: "New URL live" },
   { version: "3.1", date: "May 2, 2026", body: "Testing out different colours" },
   { version: "3.0", date: "Apr 3, 2026", body: "Massive UI overhaul" },
