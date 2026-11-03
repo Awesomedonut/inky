@@ -18,21 +18,14 @@ const ENTRIES: Entry[] = [
 export default function DevlogPage() {
   return (
     <article className="devlog">
-      <header className="devlog-header">
-        <h1 className="devlog-title">Devlog</h1>
-      </header>
-
-      <ol className="devlog-list">
+      <h1 className="heading">Devlog</h1>
+      <ul className="devlog-items">
         {ENTRIES.map((e) => (
-          <li key={e.version} className="devlog-entry">
-            <div className="devlog-entry-meta">
-              <span className="devlog-version">v{e.version}</span>
-              <time className="devlog-date">{e.date}</time>
-            </div>
-            <p className="devlog-body">{e.body}</p>
+          <li key={e.version}>
+            Version {e.version} ({e.date}): {e.body}
           </li>
         ))}
-      </ol>
+      </ul>
     </article>
   );
 }

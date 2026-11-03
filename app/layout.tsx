@@ -1,9 +1,17 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import Link from "next/link";
 import SessionProvider from "@/components/SessionProvider";
 import AuthButton from "@/components/AuthButton";
 import ThemeToggle from "@/components/ThemeToggle";
 import "./globals.css";
+
+const wordmark = localFont({
+  src: "./fonts/fraunces-latin.woff2",
+  variable: "--font-wordmark",
+  display: "swap",
+  weight: "100 900",
+});
 
 export const metadata: Metadata = {
   title: "Inky 2.0",
@@ -19,6 +27,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
+      className={wordmark.variable}
     >
       <head>
         <script
@@ -41,7 +50,7 @@ export default function RootLayout({
 
           <header className="site-header">
             <div className="header-inner">
-              <Link href="/" className="site-logo">Inky</Link>
+              <Link href="/" className="site-logo">Inky<span className="dot" aria-hidden="true" /></Link>
               <nav className="site-nav" aria-label="Site">
                 <Link href="/works">Browse</Link>
                 <Link href="/works/new">Post</Link>
