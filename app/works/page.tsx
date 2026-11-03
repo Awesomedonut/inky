@@ -24,7 +24,6 @@ function BrowseWorksInner() {
   const [works, setWorks] = useState<SanitizedWork[]>([]);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
-  const [search, setSearch] = useState(q);
 
   useEffect(() => {
     fetch(`/api/works?${new URLSearchParams({ ...(tag && { tag }), ...(q && { q }), page: String(page) }).toString()}`)
@@ -37,30 +36,9 @@ function BrowseWorksInner() {
       .catch(() => {});
   }, [tag, q, page]);
 
-  function handleSearch(e: React.FormEvent) {
-    e.preventDefault();
-    router.push(buildWorksUrl({ tag, q: search.trim() }));
-  }
-
   return (
     <div className="works-index">
       <h2 className="heading">{total} work{total !== 1 ? "s" : ""}</h2>
-
-      <fieldset className="form">
-        <form onSubmit={handleSearch}>
-          <p>
-            <label htmlFor="work-search">Search:</label>
-            <input
-              id="work-search"
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Title, summary, or author"
-            />
-            <button type="submit">Search</button>
-          </p>
-        </form>
-      </fieldset>
 
       <TagFilter />
 
